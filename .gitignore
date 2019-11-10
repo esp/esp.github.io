@@ -1,0 +1,11 @@
+#  components
+node_modules/
+# other
+**/.idea
+*.orig
+npm-debug.log
+yarn-error.log
+dist/
+lerna-debug.log
+package-lock.json
+.DS_Store
