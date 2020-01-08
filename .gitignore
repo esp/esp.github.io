@@ -9,3 +9,9 @@ dist/
 lerna-debug.log
 package-lock.json
 .DS_Store
+_site
+.sass-cache
+.jekyll-cache
+.jekyll-metadata
+vendor
+docs-build-temp
