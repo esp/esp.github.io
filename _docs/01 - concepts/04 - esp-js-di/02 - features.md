@@ -1,9 +1,10 @@
 ---
 title: Features
 permalink: /concepts/esp-js-di/features/
-toc: true
 ---
+
 TODO : break these down into separate pages
+{: .notice--danger}
 
 ## Creating a container 
 You can import and create a container like this:

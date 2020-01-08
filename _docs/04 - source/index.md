@@ -1,8 +1,9 @@
 ---
 title: Source
-classes: wide
 permalink: /source/
 ---
+
+# Source
 
 You can find all the esp packages on github: [github.com/esp/esp-js](https://github.com/esp/esp-js)
 

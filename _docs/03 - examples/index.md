@@ -1,8 +1,9 @@
 ---
 title: Examples
-classes: wide
 permalink: /examples/
 ---
+
+# Examples
 
 There is a range of examples showing how esp can be used.
 

@@ -1,8 +1,9 @@
 ---
 title: Installation
-classes: wide
 permalink: /installation/
 ---
+
+# Installation
 
 Install using yarn: `yarn add esp-js`.
 

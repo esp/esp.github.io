@@ -36,28 +36,30 @@ defaults:
       type: pages
     values:
       layout: single
+      classes: wide
       author_profile: true
   - scope:
       path: "_docs/01 - concepts"
     values:
+      layout: single
       sidebar:
         nav: "concepts"
   - scope:
       path: "_docs/02 - installation"
     values:
-      layout: single
+      layout: splash
   - scope:
       path: "_docs/03 - examples"
     values:
-      layout: single
+      layout: splash
   - scope:
       path: "_docs/04 - source"
     values:
-      layout: single
+      layout: splash
   - scope:
-      path: "_docs/04 - roadmap"
+      path: "_docs/05 - roadmap"
     values:
-      layout: single
+      layout: splash
 
 footer:
   links:
