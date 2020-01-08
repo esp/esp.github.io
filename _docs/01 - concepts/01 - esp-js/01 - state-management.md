@@ -103,7 +103,7 @@ The below diagram shows the complete event workflow.
 > ##### Note
 > While the Pre Event Processor, Event Observer and Post Event Processor are separate boxes below, in practice they can be implemented by the same model entity when using the [reactive domain approach](../modelling-approaches/reactive-domain-model.md#reactive-model).
 
-![](../../images/esp-event-workflow.png)
+![](/images/esp-event-workflow.png)
 
 <a name="workflow-sample"></a>
 
