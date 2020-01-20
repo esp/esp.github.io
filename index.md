@@ -5,8 +5,7 @@ layout: splash
 
 # Event State Processor (ESP) Documentation
 
-Draft documentation - the documentation here is largely esp 1.0 and is currently being updated.
-{: .notice--danger}
+{% include draftdocs %}
 
 ESP gives you the ability to manage changes to a model in a deterministic event driven manner.
 It does this by adding specific processing workflow around changes to a model's state. 
@@ -27,12 +26,13 @@ Some high level features include:
 * Application modules - collections of views which can be loaded separately and dynamically.
 * View/Module/Object scoping and lifecycle management via dependency injection
 
-> #### How does ESP relate to Redux or Flux architectures? 
-> The core ESP pattern was created before Redux or Flux came to market, as it turns out it's a very similar pattern. 
-> ESP could be thought of as an implementation of uni directional message flow pattern.
+> #### How Does ESP Relate to Redux or Flux Architectures? 
+> The core ESP pattern was created before Redux or Flux were widely popular, as it turns out it's a very similar pattern. 
+> ESP could be thought of as an implementation of the uni directional message flow pattern.
 > It's core use case was to build complex real time SPAs with multiple independent views.
 > Overtime it's evolved but the core use case has not changed.
 > This use case has steered the additional ESP libraries which provide many features for large composite application development.  
+{: .notice--info}
 
 ## Do you need ESP?
 
@@ -62,3 +62,4 @@ While a bit dated, the below 25min talk on ESP at the [React London Meetup](http
 {% include video id="Pj-RakjfHDI?start=333" provider="youtube" %}
 
 Slides for the talk are available [here](http://goo.gl/40jie4).
+

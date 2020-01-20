@@ -1,6 +1,6 @@
 main:
   - title: "Concepts"
-    url: /concepts/esp-js/state-management/
+    url: /concepts/overview/
   - title: "Installation"
     url: /installation/
   - title: "Examples"
@@ -11,28 +11,31 @@ main:
     url: /roadmap/
 
 concepts:
+  - title: overview
+    url: /concepts/overview/
   - title: esp-js
+    url: /concepts/esp-js/
     children:
-      - title: "State Management"
-        url: /concepts/esp-js/state-management/
+      - title: "State Change Workflow"
+        url: /concepts/esp-js/state-change-workflow/
       - title: "Event Router"
         url: /concepts/esp-js/event-router/
-      - title: "Modeling Approaches"
-        url: /concepts/esp-js/modeling-approaches/
-      - title: "OO Modeling API"
-        url: /concepts/esp-js/oo-modeling-api/
+      - title: "OO Modeling"
+        url: /concepts/esp-js/oo-modeling/
   - title: esp-js-polimer
+    url: /concepts/esp-js-polimer/
     children:
-      - title: "Immutable Modeling API"
-        url: /concepts/esp-js-polimer/immutable-modeling-api/
+      - title: "Immutable Modeling"
+        url: /concepts/esp-js-polimer/immutable-modeling/
       - title: "State Handlers"
         url: /concepts/esp-js-polimer/state-handlers/
       - title: "Event Streams"
         url: /concepts/esp-js-polimer/event-streams/
+      - title: "Model Builder"
+        url: /concepts/esp-js-polimer/model-builder/
   - title: esp-js-react
+    url: /concepts/esp-js-react/
     children:
-      - title: "React"
-        url: /concepts/esp-js-react/react/
       - title: "Router Provider"
         url: /concepts/esp-js-react/router-provider/
       - title: "Dynamic View Binding"
@@ -40,32 +43,38 @@ concepts:
       - title: "Rendering a View"
         url: /concepts/esp-js-react/rendering-a-view/
   - title: esp-js-di
+    url: /concepts/esp-js-di/
     children:
-      - title: "Overview"
-        url: /concepts/esp-js-di/overview/
-      - title: "Features"
-        url: /concepts/esp-js-di/features/
-      - title: "Why IoC?"
-        url: /concepts/esp-js-di/why-ioc/
+      - title: "Creating a Container"
+        url: /concepts/esp-js-di/creating-a-container/
+      - title: "Object Registration"
+        url: /concepts/esp-js-di/object-registration/
+      - title: "Object Resolution"
+        url: /concepts/esp-js-di/object-resolution/
+      - title: "Object Factories"
+        url: /concepts/esp-js-di/object-factories/
+      - title: "Lifetime Management"
+        url: /concepts/esp-js-di/lifetime-management/
+      - title: "Child Containers"
+        url: /concepts/esp-js-di/child-containers/
+      - title: "Dependency Resolvers"
+        url: /concepts/esp-js-di/dependency-resolvers/
+      - title: "Why no Annotations"
+        url: /concepts/esp-js-di/why-no-annotations/
   - title: "esp-js-ui"
+    url: /concepts/esp-js-ui/
     children:
-      - title: "Overview"
-        url: /concepts/esp-js-ui/overview/
-      - title: "Containers"
-        url: /concepts/esp-js-ui/containers/
+      - title: "Bootstrapping"
+        url: /concepts/esp-js-ui/bootstrapping/
       - title: "Modules"
         url: /concepts/esp-js-ui/modules/
       - title: "Services"
         url: /concepts/esp-js-ui/services/
-      - title: "View"
+      - title: "Views"
         url: /concepts/esp-js-ui/views/
-      - title: "Views State Persistence"
-        url: /concepts/esp-js-ui/view-state-persistence/
       - title: "Regions"
         url: /concepts/esp-js-ui/regions/
-      - title: "Bootstrapping an App"
-        url: /concepts/esp-js-ui/bootstrapping-an-app/
-      - title: "RX Extensions"
-        url: /concepts/esp-js-ui/rx-extensions/
+      - title: "State Persistence"
+        url: /concepts/esp-js-ui/state-persistence/
       - title: "Logging"
         url: /concepts/esp-js-ui/logging/
