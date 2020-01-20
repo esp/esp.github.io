@@ -39,25 +39,25 @@ defaults:
       classes: wide
       author_profile: true
   - scope:
-      path: "_docs/01 - concepts"
+      path: "_docs/01-concepts"
     values:
       layout: single
       sidebar:
         nav: "concepts"
   - scope:
-      path: "_docs/02 - installation"
+      path: "_docs/02-installation"
     values:
       layout: splash
   - scope:
-      path: "_docs/03 - examples"
+      path: "_docs/03-examples"
     values:
       layout: splash
   - scope:
-      path: "_docs/04 - source"
+      path: "_docs/04-source"
     values:
       layout: splash
   - scope:
-      path: "_docs/05 - roadmap"
+      path: "_docs/05-roadmap"
     values:
       layout: splash
 
@@ -71,6 +71,7 @@ footer:
       url: "https://github.com/esp/esp-js"
 
 include: ["_docs"]
+exclude: ["vendor"]
 
 minimal_mistakes_skin: "default"
 
