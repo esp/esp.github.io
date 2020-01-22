@@ -5,7 +5,7 @@ classes: wide
 ---
 
 The event router is the heart of an esp application. 
-There is typically 1 instance of the router and it's used by all models.
+There is typically one instance of the router and it's used by all models.
 
 It easy to create.
 

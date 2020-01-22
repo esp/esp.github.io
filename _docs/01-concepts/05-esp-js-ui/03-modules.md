@@ -3,4 +3,4 @@ title: Modules
 permalink: /concepts/esp-js-ui/modules/
 ---
 
-{% include draftdocs %}
+{% include draftdocs.html %}

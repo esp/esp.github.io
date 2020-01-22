@@ -3,7 +3,7 @@ title: ESP-JS-React
 permalink: /concepts/esp-js-react/
 ---
 
-{% include draftdocs %}
+{% include draftdocs.html %}
 
 [esp-js-react](https://github.com/esp/esp-js-react) contains lightweight common infrastructure to help you build [React](https://facebook.github.io/react/) apps using [esp-js](https://github.com/esp/esp-js).
 `RouterProvider` and `SmartComponent`, both React components are included. 
