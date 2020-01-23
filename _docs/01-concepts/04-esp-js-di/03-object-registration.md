@@ -8,7 +8,6 @@ Typically in typed languages you'd utilise information provided by the type syst
 However without such a system all is not lost, we can simply use strings (i.e. '**identifiers**') to identify objects to construct.
 {: .notice--info} 
 
-
 You can register an object using one of three methods:
 
 * `container.register(identifier, Item)`.
@@ -27,8 +26,8 @@ You can register an object using one of three methods:
   ```
 
   Here we register `Item` using the string `identifier`. 
-  We state that it requires [dependencies](#dependencies) `otherDependencyIdentifier1` and `otherDependencyIdentifier1`. 
-  It's [lifetime management](#lifetime-management) is `singletonPerContainer`.
+  We state that it requires dependencies `otherDependencyIdentifier1` and `otherDependencyIdentifier1`. 
+  It's [lifetime management](./06-lifetime-management.md) is `singletonPerContainer`.
   It can be resolved using the `identifier` or as part of the [group](#resolve-groups) `mySimilarObjects`. 
   
 * `container.registerInstance(identifier, objectInstance)`.

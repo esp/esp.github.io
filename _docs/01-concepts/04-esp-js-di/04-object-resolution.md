@@ -11,6 +11,7 @@ Object resolution is done via :
   Any dependencies will also be built and injected.
   Optionally provide additional dependencies which will get passed in after any that were specified via `inject()` at registration time.
   
+<a name="resolve-groups"></a>  
 * `container.resolveGroup(name);`
 
    Resolving a [group](#resolve-groups) returns an array of objects registered against that group. 

@@ -23,6 +23,5 @@ Alternatively you can reference `dist\esp.js` or `dist\esp.min.js` via a `script
 
 ## TypeScript Typings
 
-All packages have a corresponding `.d.ts` file which is correctly referenced via the `typings` property in [package.json](../package.json).
+All packages have a corresponding `.d.ts` file which is correctly referenced via the `typings` property in each repos package.json.
 This allows the TypeScript compiler to find it.
-`
