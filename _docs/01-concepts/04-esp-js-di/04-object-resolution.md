@@ -6,38 +6,35 @@ permalink: /concepts/esp-js-di/object-resolution/
 Object resolution is done via :
 
 * `container.resolve(identifier [, additionalDependency1, additionalDependency2, etc. ]);`
-
-  This simply builds the object registered with the given `identifier`. 
+  This builds the object registered with the given `identifier`. 
   Any dependencies will also be built and injected.
   Optionally provide additional dependencies which will get passed in after any that were specified via `inject()` at registration time.
   
-<a name="resolve-groups"></a>  
 * `container.resolveGroup(name);`
-
-   Resolving a [group](#resolve-groups) returns an array of objects registered against that group. 
+   Resolving a group returns an array of objects registered against that group name. 
+   More below on this.
  
-<div class="notice--info">
-    A call to `resolve` will trigger build up of the object in question. 
-    Any [dependencies](#dependencies) the object requires will be resolved and injected.
-    
-    ### Function constructors
-    
-    If the type registered is a constructor function (i.e. typeof registeredObject === 'function') it will be initialised accordingly and any [dependencies](#dependencies) passed in.
-    {: .notice--info}
-    
-    ### Prototypical inheritance
-    
-    If the type registered is not a constructor function it will be assumed a prototype.
-    At resolve time new object/s will be created using Object.create(registeredObject).
-    If the object has an `init` method then this will be called passing any [dependencies](#dependencies).
-</div>
+{% capture info_1 %}
+Resolution will trigger build up of the object in question. 
+Any dependencies the object requires will be resolved and injected.
+
+### Function constructors / Classes
+If the type registered is a constructor function (i.e. typeof registeredObject === 'function') or class it will be initialised accordingly and any dependencies passed in.
+
+### Prototypical inheritance
+
+If the type registered is not a constructor function it will be assumed a prototype.
+At resolve time new object/s will be created using `Object.create(registeredObject)`.
+If the object has an `init()` method then this will be called passing any dependencies registered.
+{% endcapture %}
+{% include callout-info.html content=info_1 title="How does the resolution work?" %}
 
 ## Example
 
 Below we have 2 simple classes. 
 `Parent` takes `Child` as it's dependency. 
-`Child` is registered with the identifier 'child' and `Parent` with the identifier 'parent'.
-Additionally the parent registration injects the `Child` as a [dependency](#dependencies).
+`Child` is registered with the identifier `child` and `Parent` with the identifier `parent`.
+Additionally the parent registration injects the `Child` as a dependency.
 
 ``` javascript
 class Child {
@@ -69,6 +66,7 @@ Hello from the parent
 Hello from the child
 ```
 
+<a name="resolve-groups"></a>  
 # Resolve groups
 
 You can group objects together at registration time then resolve them using `resolveGroup(name)`.
@@ -115,7 +113,7 @@ var bazz = container.resolveGroup('bazz');
 
 ## Resolution with additional dependencies
 
-When calling `resolve` you can optionally pass additional [dependencies](#dependencies).
+When calling `resolve` you can optionally pass additional dependencies.
 These will be appended to the dependencies provided to `inject` at registration time (if any).
 
 ```javascript

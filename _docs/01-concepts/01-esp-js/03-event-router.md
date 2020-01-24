@@ -53,7 +53,7 @@ You can the `@observeEvent(observeAtStage)` decorator to wire up functions or OO
 The `RouterProvider` and `ConnectableComponent` (or `connect` function) in esp-js-react can wire a view up via `Router.getEventObservable(...)`.
 The [examples](../../03-examples/index.md) show how to do this.
 {% endcapture %}
-{% include callout-tip.html content=tip_1 %}
+{% include callout-success.html content=tip_1 %}
 
 The `Router` needs to manage how the above interactions happen deterministically. 
 Given any handler or observer registered with the `Router` could itself publish events or observe other models, the `Router` needs an internal event queue and processing loop. 
@@ -89,7 +89,7 @@ Again, the dispatch loop continues until all events are processed.
 {% capture tip_2 %}
 The specific workflow the `Router` does on the dispatch loop is called the [state change workflow](./02-state-change-workflow.md).
 {% endcapture %}
-{% include callout-tip.html content=tip_2 %}
+{% include callout-success.html content=tip_2 %}
 
 ## Reactive API
 
