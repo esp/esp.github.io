@@ -13,27 +13,27 @@ When the container is disposed, the container will, for any registered instances
 
 
 ```javascript
-var Foo = {};
+let Foo = {};
 container.register('theFoo', Foo).singleton();
-var foo1 = container.resolve('theFoo');
-var foo2 = container.resolve('theFoo');
+let foo1 = container.resolve('theFoo');
+let foo2 = container.resolve('theFoo');
 console.log(foo1 == foo2); // true
 ```
 
 Note this is the default lifetime used and so the call to `.singleton()` is optional.
 
-### Singleton per container
+### Singleton Per Container
 
-This is similar to a singleton however you get a single instance per child container.
+This is similar to a singleton however you get a single instance per [child container](./07-child-containers.md).
 
 ```javascript
-var Bar = {};
+let Bar = {};
 container.register('theBar', Bar).singletonPerContainer();
-var bar1 = container.resolve('theBar');
-var bar2 = container.resolve('theBar');
-var childContainer = container.createChildContainer();
-var bar3 = childContainer.resolve('theBar');
-var bar4 = childContainer.resolve('theBar');
+let bar1 = container.resolve('theBar');
+let bar2 = container.resolve('theBar');
+let childContainer = container.createChildContainer();
+let bar3 = childContainer.resolve('theBar');
+let bar4 = childContainer.resolve('theBar');
 console.log(bar1 == bar2); // true
 console.log(bar2 == bar3); // false
 console.log(bar3 == bar4); // true
@@ -45,10 +45,10 @@ This creates a new instance each time a call to `resolve(identifier)` or `resolv
 The container will not hold a reference to the instances created.
 
 ```javascript
-var Baz = {};
+let Baz = {};
 container.register('theBaz', Baz).transient();
-var baz1 = container.resolve('theBaz');
-var baz2 = container.resolve('theBaz');
+let baz1 = container.resolve('theBaz');
+let baz2 = container.resolve('theBaz');
 console.log(baz1 == baz2); // false
 ```
 
@@ -57,7 +57,7 @@ console.log(baz1 == baz2); // false
 Like a singleton however the container won't dispose the object when it's disposed.
 
 ```javascript
-var Disposable = {
+let Disposable = {
     init() {
         this.isDisposed = false;
         return this;
@@ -71,8 +71,8 @@ var Disposable = {
 // The container will then manage it as 'singleton' and dispose the instance at disposal time 
 container.registerInstance('disposable1', Object.create(Disposable).init());
 container.register('disposable2', Disposable);
-var disposable1 = container.resolve('disposable1');
-var disposable2 = container.resolve('disposable2');
+let disposable1 = container.resolve('disposable1');
+let disposable2 = container.resolve('disposable2');
 container.dispose();
 console.log(disposable1.isDisposed); // false
 console.log(disposable2.isDisposed); // true

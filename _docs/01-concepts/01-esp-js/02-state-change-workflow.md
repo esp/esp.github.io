@@ -51,4 +51,4 @@ You should not expand or contract your model in the post processing stage, it's 
 
 The underlying router API allows you to subscribe for events at the given stage. 
 In practice you'll wire up events using decorators. 
-The [examples](../../03 - examples/index.md) show how to do this.
+The [examples](../../03-examples/index.md) show how to do this.

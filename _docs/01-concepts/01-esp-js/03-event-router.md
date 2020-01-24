@@ -5,7 +5,7 @@ classes: wide
 ---
 
 The event router is the heart of an esp application. 
-There is typically 1 instance of the router and it's used by all models.
+There is typically one instance of the router and it's used by all models.
 
 It easy to create.
 
@@ -47,12 +47,13 @@ router
     });
 ```
 
-> #### Note
-> In practice you tend not to directly interact with the `Router.getModelObservable(...)` and `Router.getEventObservable(...)` APIs, framework code will do that for you.
-> You can the `@observeEvent(observeAtStage)` decorator to wire up functions or OO objects to the router via `Router.getEventObservable(...)`.
-> The `RouterProvider` and `ConnectableComponent` (or `connect` function) in esp-js-react can wire a view up via `Router.getEventObservable(...)`.
-> The [examples](../../03 - examples/index.md) show how to do this.
-{: .notice--success}
+{% capture tip_1 %}
+In practice you tend not to directly interact with the `Router.getModelObservable(...)` and `Router.getEventObservable(...)` APIs, framework code will do that for you.
+You can the `@observeEvent(observeAtStage)` decorator to wire up functions or OO objects to the router via `Router.getEventObservable(...)`.
+The `RouterProvider` and `ConnectableComponent` (or `connect` function) in esp-js-react can wire a view up via `Router.getEventObservable(...)`.
+The [examples](../../03-examples/index.md) show how to do this.
+{% endcapture %}
+{% include callout-success.html content=tip_1 %}
 
 The `Router` needs to manage how the above interactions happen deterministically. 
 Given any handler or observer registered with the `Router` could itself publish events or observe other models, the `Router` needs an internal event queue and processing loop. 
@@ -85,20 +86,21 @@ The `Router` pushes the model updates to observers from within the dispatch loop
 If any model observer publishes an event it will go onto the event queue for the model in question.
 Again, the dispatch loop continues until all events are processed.
 
-> #### Tip
-> The specific workflow the `Router` does on the dispatch loop is called the [state change workflow](./02 - state-change-workflow.md).
-{: .notice--success}
+{% capture tip_2 %}
+The specific workflow the `Router` does on the dispatch loop is called the [state change workflow](./02-state-change-workflow.md).
+{% endcapture %}
+{% include callout-success.html content=tip_2 %}
 
 ## Reactive API
 
 Both `router.getEventObservable()` and `router.getModelObservable()` return an observable object.
 This is modeled on [RxJs's](https://github.com/Reactive-Extensions/RxJS) observable API but with only a few observable methods included, additionally `onError` semantics are not applicable.
 
-> #### Why not use Rx? <a name="reactive-api-why-not-rx"></a>
->
-> The push based model of Rx is ideal for pub/sub scenarios where state needs to be combined from many differing streams.
-> However the full Rx API isn't suitable as introduction of asynchronicity and other methods that would result in state being held in observable streams would break the deterministic staged workflow that the `Router` owns.
-> For example, a deferred model change by way of an asynchronous operation would happen outside of the [state change workflow](./02 - state-change-workflow.md).
-> Then there is no guarantee the model would be still in a state suitable once the deferred event arrives.
-> Similarly, relational operators combine event streams and store state in observable objects/closures, when a final result yields the underlying model may not be in a state suitable for the target result.
-{: .notice--success}
+{% capture info_1 %}
+The push based model of Rx is ideal for pub/sub scenarios where state needs to be combined from many differing streams.
+However the full Rx API isn't suitable as introduction of asynchronicity and other methods that would result in state being held in observable streams would break the deterministic staged workflow that the `Router` owns.
+For example, a deferred model change by way of an asynchronous operation would happen outside of the [state change workflow](./02-state-change-workflow.md).
+Then there is no guarantee the model would be still in a state suitable once the deferred event arrives.
+Similarly, relational operators combine event streams and store state in observable objects/closures, when a final result yields the underlying model may not be in a state suitable for the target result.
+{% endcapture %}
+{% include callout-info.html content=info_1 title="Why not use Rx?" %}

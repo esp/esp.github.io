@@ -13,9 +13,11 @@ It's API allows for:
 
 It doesn't know about React, OO models or immutable models, it just knows how to take an event and apply it to a handler you register for that model. 
 
+{% capture info_1 %}
 In reality the various bits provide means you don't directly observe a model, or directly wire up a handler to have state changed.
 It's useful to know that a simple event bus is a play under the coves.
 It is however, common to publish events directly to a model so you can changes it's state.
-{: .notice--success} 
+{% endcapture %}
+{% include callout-info.html content=info_1 %}
 
 The [api example](https://github.com/esp/esp-js/tree/master/examples/esp-js-api) show these lower APIs at work.

@@ -3,4 +3,4 @@ title: Bootstrapping
 permalink: /concepts/esp-js-ui/bootstrapping/
 ---
 
-{% include draftdocs %}
+{% include draftdocs.html %}

@@ -7,10 +7,11 @@ ESP consists of several packages which enable a developer to build composite dec
 Developers build views that are packaged into modules and can ultimately be deployed and versioned separably yet come together in a single page.
 It's entirely possible to have each ESP module deployed separably and downloaded dynamically at runtime.
 
-> #### Info
-> ESP doesn't prescribe bundling tools or versioning strategies, rather it provides a means for developers to build views which can be plugged into an overall application. 
-> If you're building a 'micro front end' you can use ESP to modularise your application, and use build tools such as [webpack](https://webpack.js.org/) to bundle the modules separately for download.
-{: .notice--info}
+{% capture info_1 %}
+ESP doesn't prescribe bundling tools or versioning strategies, rather it provides a means for developers to build views which can be plugged into an overall application. 
+If you're building a 'micro front end' you can use ESP to modularise your application, and use build tools such as [webpack](https://webpack.js.org/) to bundle the modules separately for download.
+{% endcapture %}
+{% include callout-info.html content=info_1 %}
 
 ## Introduction to the ESP Packages
 

@@ -3,11 +3,12 @@ title: Object Registration
 permalink: /concepts/esp-js-di/object-registration/
 ---
 
+{% capture info_1 %}
 JavaScript doesn't have a type system which makes containers a little cumbersome to use. 
 Typically in typed languages you'd utilise information provided by the type system to aid in dependency resolution and injection.
-However without such a system all is not lost, we can simply use strings (i.e. '**identifiers**') to identify objects to construct.
-{: .notice--info} 
-
+However without such a system all is not lost, we can simply use strings (i.e. 'identifiers') to identify objects to construct.
+{% endcapture %}
+{% include callout-info.html content=info_1 %}
 
 You can register an object using one of three methods:
 
@@ -18,7 +19,7 @@ You can register an object using one of three methods:
   You can chain calls to alter the registration settings:
   
   ```javascript
-    var identifier = 'itemKey1';
+    let identifier = 'itemKey1';
     container
         .register('identifier', Item)
         .inject('otherDependencyIdentifier1', 'otherDependencyIdentifier1')
@@ -27,9 +28,9 @@ You can register an object using one of three methods:
   ```
 
   Here we register `Item` using the string `identifier`. 
-  We state that it requires [dependencies](#dependencies) `otherDependencyIdentifier1` and `otherDependencyIdentifier1`. 
-  It's [lifetime management](#lifetime-management) is `singletonPerContainer`.
-  It can be resolved using the `identifier` or as part of the [group](#resolve-groups) `mySimilarObjects`. 
+  We state that it requires dependencies `otherDependencyIdentifier1` and `otherDependencyIdentifier1`. 
+  It's [lifetime management](./06-lifetime-management.md) is `singletonPerContainer`.
+  It can be resolved using the `identifier` or as part of the [group](./04-object-resolution.md#resolve-groups) `mySimilarObjects`. 
   
 * `container.registerInstance(identifier, objectInstance)`.
 
@@ -58,8 +59,10 @@ You can register an object using one of three methods:
   Our creation factory resolves an additional dependency, then passes this dependency, plus the additional dependencies `1, 2, 3` to `Foo`s constructor and returns it.
   It's registered using a transient scope so each time you resolve it, the factor will be invoked to resolve a new `Foo` instance. 
   
-  
+
+{% capture info_2 %}
 We need to manually specify objects dependencies at registration time. 
 This is because there are no means available to inspect arguments required for `constructors` or `init` methods at object instantiation/initialisation time.
 We specify dependencies via `inject`
-{: .notice--info} 
+{% endcapture %}
+{% include callout-info.html content=info_2 %}

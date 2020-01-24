@@ -1,0 +1,12 @@
+<blockquote class="notice--success">
+    <div>
+        {% if include.title %}
+        <h4>{{ include.title }}</h4>
+        {% else %}
+        <h4>Tip</h4>
+        {% endif %}
+        <p>
+            {{ include.content || markdownify }}
+        </p>
+    </div>
+</blockquote>
