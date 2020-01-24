@@ -1,5 +1,5 @@
 ---
-title: Why no Annotation?
+title: Why No Annotation?
 permalink: /concepts/esp-js-di/why-no-annotations/
 ---
 
@@ -16,3 +16,8 @@ The author believes this to be useful in some instances however often an anti-pa
   This adds confusion.
 * It doesn't work when creating shared code, i.e. in libraries. 
   If you hit this you don't want some code using annotation and some using run time configuration (i.e. the above point).
+
+{% capture info_1 %}
+That said, they can be usually added as a bolt on, it's just not got to the top of the list.
+{% endcapture %}
+{% include callout-info.html content=info_1 %}

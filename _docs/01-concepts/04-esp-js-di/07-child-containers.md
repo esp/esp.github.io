@@ -9,28 +9,28 @@ They also inherit instances from their parent depending upon the lifetime manage
 
 Create a child container by calling `createChildContainer` on a parent;
 ```javascript
-var container = new Container();
-var childcontainer = container.createChildContainer();
+let container = new Container();
+let childcontainer = container.createChildContainer();
 ```
 
-### Lifetime management in child containers
+### Lifetime Management in Child Containers
 
 Depending upon registration configurations, objects resolved from a child container will either be owned by the child container or the parent.
 
 ```javascript
-var Foo = { };
-var container = new Container();
-var childContainer = container.createChildContainer();
+let Foo = { };
+let container = new Container();
+let childContainer = container.createChildContainer();
 container.register('foo', Foo); // defaults to singleton registration
-var foo1 = container.resolve('foo');
-var foo2 = childContainer.resolve('foo');
+let foo1 = container.resolve('foo');
+let foo2 = childContainer.resolve('foo');
 console.log(foo1 == foo2); // true, same instance
 
 container.register('fooAgain', Foo).singletonPerContainer();
-var foo3 = container.resolve('fooAgain');
-var foo4 = childContainer.resolve('fooAgain');
+let foo3 = container.resolve('fooAgain');
+let foo4 = childContainer.resolve('fooAgain');
 console.log(foo3 == foo4); // false, different instance
-var foo5 = childContainer.resolve('fooAgain');
+let foo5 = childContainer.resolve('fooAgain');
 console.log(foo4 == foo5); // true, same instance
 ```
 
@@ -39,21 +39,21 @@ console.log(foo4 == foo5); // true, same instance
 The configuration of a child container can be overridden if required.
 
 ```javascript
-var Foo = { };
-var container = new Container();
+let Foo = { };
+let container = new Container();
 container.register('foo', Foo); // defaults to singleton registration
 
-var childcontainer = container.createChildContainer();
+let childcontainer = container.createChildContainer();
 childcontainer.register('foo', Foo).transient();
 
-var foo1 = container.resolve('foo');
-var foo2 = container.resolve('foo');
+let foo1 = container.resolve('foo');
+let foo2 = container.resolve('foo');
 console.log(foo1 == foo2); // true, same instance
 
-var foo3 = childcontainer.resolve('foo');
+let foo3 = childcontainer.resolve('foo');
 console.log(foo2 == foo3); // false, different instance
 
-var foo4 = childcontainer.resolve('foo');
+let foo4 = childcontainer.resolve('foo');
 console.log(foo3 == foo4); // false, different instance
 ```
 
@@ -65,7 +65,7 @@ false
 false
 ```
 
-## Resolving the container
+## Resolving the Container
 
 Sometimes you have an object that requires the container to be injected. 
 While often thought of as an anti pattern, there are scenarios where this makes sense. 
@@ -88,7 +88,7 @@ Lets look at the manual way of doing this:
 
 ```javascript
 import { Container } from 'esp-js-di'; 
-var container = new Container();
+let container = new Container();
 container.registerInstance('theRootContainer', container);
 container.register('bootstrapper', Bootstrapper).inject('theRootContainer');
 // bootstrapper will get injected with instance `container`
@@ -99,16 +99,16 @@ This will work, but when there are child container at play it gets a bit messy a
 Typically you strive to keep child container re-configuration to a minimum for code maintainability reasons. 
 
 The `Container` supports a special injection key exposed as `EspDiConsts.owningContainer`.
-This key will ensure an object getting resolved get it's owning container.
+This key will ensure an object getting resolved gets it's owning container.
 Lets re-work the above example:
 
 ```javascript
 import { Container, EspDiConsts } from 'esp-js-di'; 
-var container = new Container();
+let container = new Container();
 container
     .register('bootstrapper', Bootstrapper)
     .inject(EspDiConsts.owningContainer);
-// bootstrapper will get injected with instance `container`
+// bootstrapper will get injected with instance `container`, i.e. the container that created it.
 let bootstrapper = container.resolve('bootstrapper');
 ```
 
@@ -116,7 +116,7 @@ Objects injected with `EspDiConsts.owningContainer` and resolved from child cont
 
 ```javascript
 import { Container, EspDiConsts } from 'esp-js-di'; 
-var container1 = new Container();
+let container1 = new Container();
 container1
     .register('bootstrapper', Bootstrapper)
     .transient() // resolve new `Bootstrapper` instance each time
@@ -125,7 +125,7 @@ container1
 // bootstrapper1 will get injected with `container1`
 let bootstrapper1 = container1.resolve('bootstrapper');
 
-// bootstrapper2 will get injected with `container2`
+// bootstrapper2 will get injected with `container2` as that's the container that created it.
 let container2 = container1.createChildContainer();
 let bootstrapper2 = container2.resolve('bootstrapper');
 ```
@@ -149,13 +149,13 @@ class Foo {
     }
 }
 
-var container = new Container();
+let container = new Container();
 
 container.register('foo', Foo).singletonPerContainer();
-var foo1 = container.resolve('foo');
+let foo1 = container.resolve('foo');
 
-var childcontainer = container.createChildContainer();
-var foo2 = childcontainer.resolve('foo');
+let childcontainer = container.createChildContainer();
+let foo2 = childcontainer.resolve('foo');
 
 container.dispose();
 ```

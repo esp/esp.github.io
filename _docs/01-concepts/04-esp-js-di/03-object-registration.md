@@ -6,7 +6,7 @@ permalink: /concepts/esp-js-di/object-registration/
 {% capture info_1 %}
 JavaScript doesn't have a type system which makes containers a little cumbersome to use. 
 Typically in typed languages you'd utilise information provided by the type system to aid in dependency resolution and injection.
-However without such a system all is not lost, we can simply use strings (i.e. '**identifiers**') to identify objects to construct.
+However without such a system all is not lost, we can simply use strings (i.e. 'identifiers') to identify objects to construct.
 {% endcapture %}
 {% include callout-info.html content=info_1 %}
 
@@ -19,7 +19,7 @@ You can register an object using one of three methods:
   You can chain calls to alter the registration settings:
   
   ```javascript
-    var identifier = 'itemKey1';
+    let identifier = 'itemKey1';
     container
         .register('identifier', Item)
         .inject('otherDependencyIdentifier1', 'otherDependencyIdentifier1')

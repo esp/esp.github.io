@@ -18,10 +18,10 @@ Object resolution is done via :
 Resolution will trigger build up of the object in question. 
 Any dependencies the object requires will be resolved and injected.
 
-### Function constructors / Classes
+### Function Constructors / Classes
 If the type registered is a constructor function (i.e. typeof registeredObject === 'function') or class it will be initialised accordingly and any dependencies passed in.
 
-### Prototypical inheritance
+### Prototypical Inheritance
 
 If the type registered is not a constructor function it will be assumed a prototype.
 At resolve time new object/s will be created using `Object.create(registeredObject)`.
@@ -51,10 +51,10 @@ class Parent {
         this._child.sayHello();
     }
 }
-var container = new Container();
+let container = new Container();
 container.register('child', Child);
 container.register('parent', Parent).inject('child');
-var parent = container.resolve('parent');
+let parent = container.resolve('parent');
 parent.sayHello();
 ```
 
@@ -67,22 +67,22 @@ Hello from the child
 ```
 
 <a name="resolve-groups"></a>  
-# Resolve groups
+# Resolve Groups
 
 You can group objects together at registration time then resolve them using `resolveGroup(name)`.
 Typically this is handy when you're objects share a related abstraction.
 
 ```javascript
-var Foo = {
+let Foo = {
     name: "theFoo"
 };
-var Bar = {
+let Bar = {
     name: "theBar"
 };
-var container = new Container();
+let container = new Container();
 container.register('foo', Foo).inGroup('group1');
 container.register('bar', Bar).inGroup('group1');
-var group1 = container.resolveGroup('group1');
+let group1 = container.resolveGroup('group1');
 for (let i = 0, len = group1.length; i < len; i++) {
     console.log(group1[i].name);
 }
@@ -95,7 +95,7 @@ theFoo
 theBar
 ```
 
-### Injecting groups
+### Injecting Groups
 
 If you want to inject a group simply register the injection using the `groupName`.
 From example, if you wanted to inject all dependencies in group `group1`, from our example above, you'd do this:
@@ -108,10 +108,11 @@ class Bazz {
     }
 };
 container.register('bazz', Bazz).inject('group1');
-var bazz = container.resolveGroup('bazz');
+let bazz = container.resolveGroup('bazz');
 ```
 
-## Resolution with additional dependencies
+<a name="resolution-with-additional-dependencies"></a>  
+## Resolution with Additional Dependencies
 
 When calling `resolve` you can optionally pass additional dependencies.
 These will be appended to the dependencies provided to `inject` at registration time (if any).
@@ -122,10 +123,10 @@ class Foo {
         console.log('%s %s %s', fizz.name, bar.name, bazz.name);
     }
 }
-var container = new Container();
+let container = new Container();
 container.register('fizz', { name: 'fizz'});
 container.register('foo', Foo).inject('fizz');
-var foo = container.resolve('foo', { name: 'bar'}, { name: 'bazz'});
+let foo = container.resolve('foo', { name: 'bar'}, { name: 'bazz'});
 ```
 
 Output
