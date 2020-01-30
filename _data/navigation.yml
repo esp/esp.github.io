@@ -16,12 +16,16 @@ concepts:
   - title: esp-js
     url: /concepts/esp-js/
     children:
-      - title: "State Change Workflow"
-        url: /concepts/esp-js/state-change-workflow/
       - title: "Event Router"
         url: /concepts/esp-js/event-router/
+      - title: "State Change Workflow"
+        url: /concepts/esp-js/state-change-workflow/
       - title: "OO Modeling"
         url: /concepts/esp-js/oo-modeling/
+      - title: "Talking to Other Models"
+        url: /concepts/esp-js/talking-to-other-models/
+      - title: "Advanced Concepts"
+        url: /concepts/esp-js/advanced-concepts/
   - title: esp-js-polimer
     url: /concepts/esp-js-polimer/
     children:
