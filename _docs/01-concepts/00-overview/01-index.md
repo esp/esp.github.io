@@ -37,7 +37,7 @@ ESP encourages **model first development**, it's entire purpose was to make mode
 
 Some random facts (or aspirations) about models:
 
-* The term model in the general sense, as used thought out this documentation, could be managed using OO or immutable patterns. 
+* Throughout this documentation the term model means a part of your application that manages state, this could be done using OO or immutable patterns. 
   What ever way you look at it the state still exists in a model.
 * 90% of application code will be in models and 99% of business logic exists in models.
 * A model can be thought of a a container for related functionality, you may have a model for a view, a trade grid, managing notification, displaying popups. 
@@ -47,7 +47,7 @@ Some random facts (or aspirations) about models:
   State such as validation, errors, visible panels along with all data are all part of a typical view's model. 
 * Backend data typically is handed by services, simple objects that talk downstream and expose an API to the rest of the system.
   Results from backend data is pushed to models for evaluation. 
-* In an esp application models are isolated off from other models and communicate via events.
+* In an ESP application models are isolated off from other models and communicate via events.
   These are published via the esp `Router`, effectively an event bus.
   This keeps models decoupled.
 * One or more views can be associated with an instance of a model and those views rendered when the model changes.
