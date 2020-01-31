@@ -5,8 +5,6 @@ permalink: /examples/
 
 # Examples
 
-There is a range of examples showing how esp can be used.
-
 The examples can be found in the [examples](https://github.com/esp/esp-js/tree/master/examples/) directory.
 
 ## ESP-JS API Examples

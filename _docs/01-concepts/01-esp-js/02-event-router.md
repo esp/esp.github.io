@@ -21,6 +21,13 @@ const myModel = {};
 router.addModel('myModelId', myModel);
 ```
 
+{% capture info_1 %}
+The registered model will always be some form of JavaScript object, in the above an object literal.
+This instance never changes.
+This instance can be an [OO model](./04-oo-modeling.md) or a more immutable type managed by plumbing such as [esp-js-polimer](../02-esp-js-polimer/01-index.md).
+{% endcapture %}
+{% include callout-info.html content=info_1 %}
+
 Handlers can be wire up to the `Router`.
 
 ```typescript
@@ -49,8 +56,11 @@ router
 
 {% capture tip_1 %}
 In practice you tend not to directly interact with the `Router.getModelObservable(...)` and `Router.getEventObservable(...)` APIs, framework code will do that for you.
-You can the `@observeEvent(observeAtStage)` decorator to wire up functions or OO objects to the router via `Router.getEventObservable(...)`.
-The `RouterProvider` and `ConnectableComponent` (or `connect` function) in esp-js-react can wire a view up via `Router.getEventObservable(...)`.
+
+For the model side, you can the decorator `@observeEvent(observeAtStage)` to wire up functions to the router.
+
+For the view side `RouterProvider` and `ConnectableComponent` (or `connect` function) in [esp-js-react](../03-esp-js-react/01-index.md) can wire a view up via `Router.getEventObservable(...)`.
+
 The [examples](../../03-examples/index.md) show how to do this.
 {% endcapture %}
 {% include callout-success.html content=tip_1 %}
@@ -87,7 +97,7 @@ If any model observer publishes an event it will go onto the event queue for the
 Again, the dispatch loop continues until all events are processed.
 
 {% capture tip_2 %}
-The specific workflow the `Router` does on the dispatch loop is called the [state change workflow](./02-state-change-workflow.md).
+The specific workflow the `Router` does on the dispatch loop is called the [state change workflow](03-state-change-workflow.md).
 {% endcapture %}
 {% include callout-success.html content=tip_2 %}
 
@@ -99,7 +109,7 @@ This is modeled on [RxJs's](https://github.com/Reactive-Extensions/RxJS) observa
 {% capture info_1 %}
 The push based model of Rx is ideal for pub/sub scenarios where state needs to be combined from many differing streams.
 However the full Rx API isn't suitable as introduction of asynchronicity and other methods that would result in state being held in observable streams would break the deterministic staged workflow that the `Router` owns.
-For example, a deferred model change by way of an asynchronous operation would happen outside of the [state change workflow](./02-state-change-workflow.md).
+For example, a deferred model change by way of an asynchronous operation would happen outside of the [state change workflow](03-state-change-workflow.md).
 Then there is no guarantee the model would be still in a state suitable once the deferred event arrives.
 Similarly, relational operators combine event streams and store state in observable objects/closures, when a final result yields the underlying model may not be in a state suitable for the target result.
 {% endcapture %}
