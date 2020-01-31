@@ -7,5 +7,5 @@ permalink: /concepts/esp-js/talking-to-other-models/
 
 Draft notes:
 
-* do so via events
-* some legacy apis that will be removed
+* Talk so via events.
+* Some legacy apis that will be removed.

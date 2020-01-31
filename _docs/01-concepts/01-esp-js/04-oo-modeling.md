@@ -14,7 +14,12 @@ There are downsides to OO programing in the React world, see the pros and cons b
 {% endcapture %}
 {% include callout-warning.html content=warning_1 %}
 
-
+<p class="codepen" data-height="664" data-theme-id="dark" data-default-tab="js,result" data-user="KeithWoods" data-slug-hash="JjoQNJq" style="height: 664px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="esp-docs-oo-example">
+  <span>See the Pen <a href="https://codepen.io/KeithWoods/pen/JjoQNJq">
+  esp-docs-oo-example</a> by Keith (<a href="https://codepen.io/KeithWoods">@KeithWoods</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
+</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
 
 Draft notes:
 
