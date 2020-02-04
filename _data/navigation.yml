@@ -24,8 +24,6 @@ concepts:
         url: /concepts/esp-js/oo-modeling/
       - title: "Talking to Other Models"
         url: /concepts/esp-js/talking-to-other-models/
-      - title: "Advanced Concepts"
-        url: /concepts/esp-js/advanced-concepts/
   - title: esp-js-polimer
     url: /concepts/esp-js-polimer/
     children:
