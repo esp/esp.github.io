@@ -71,7 +71,7 @@ footer:
       url: "https://github.com/esp/esp-js"
 
 include: ["_docs"]
-exclude: ["vendor"]
+exclude: ["vendor", "dev-build.sh", "ReadMe.md"]
 
 minimal_mistakes_skin: "default"
 

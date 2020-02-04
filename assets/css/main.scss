@@ -4,9 +4,15 @@
 
 @charset "utf-8";
 
+// overide any vars **before** any import statements
+// https://mmistakes.github.io/minimal-mistakes/docs/stylesheets/
+// This is overriding the default 1280 px width used by #main which wraps everything in the theme
+$x-large: 1380px;
+
 @import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
 @import "minimal-mistakes"; // main partials
 
 blockquote {
   font-style: normal;
 }
+
