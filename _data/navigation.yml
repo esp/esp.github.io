@@ -61,7 +61,7 @@ concepts:
         url: /concepts/esp-js-di/child-containers/
       - title: "Dependency Resolvers"
         url: /concepts/esp-js-di/dependency-resolvers/
-      - title: "Why no Annotations"
+      - title: "Why no Annotations?"
         url: /concepts/esp-js-di/why-no-annotations/
   - title: "esp-js-ui"
     url: /concepts/esp-js-ui/
