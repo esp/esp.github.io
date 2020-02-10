@@ -5,19 +5,23 @@ layout: splash
 
 # Event State Processor (ESP) Documentation
 
-{% include draftdocs.html %}
-
 ESP gives you the ability to manage changes to a model in a deterministic event driven manner.
-It does this by adding specific processing workflow around changes to a model's state. 
-It was born out of the need to manage complex UI and/or server state.
+It does this by adding specific processing workflow around changes to state. 
 
-At its core is a `Router` which typically sits between a view and the model.
-The view publish events to the model via the `Router`.
-The `Router` dispatches the event to the model for state to be changed.
-When all events are processed the model is then pushed back to the view so new state can be applied.
-It's lightweight, easy to apply and puts the model at the forefront of your design.
+ESP was born out of the need to manage complex streaming state in reactive applications.
+Typically with pure reactive application, state gets held up in observable sequences, there is no central model to manage manage state in these sequences.
+If different sequences require the same state, or there is subtle ordering in how you need to work with these sequences, you find yourself constantly refactoring them.
+Inherently, observable logic often gets intermingled with business modeling making both reasoning and maintenance hard.
+It's almost impossible to write clean business code without observable abstractions getting in the way. 
+Streaming reactive patterns are great for pure data or event procurement, but are poor for complex state processing.
 
-Over time additional libraries have been added to ESP to to add support to build very large composite Single Page Apps in React. 
+ESP solves this by putting models at the forefront of your design yet still allowing your application to remain reactive. 
+Central to ESP's design is an event `Router`.
+This object manages both state change and state observation workflow for all models in the system.
+It does this by providing an event publishing interface to change state, an event observation interface to mutate state, and finally a model observation interface to watch state. 
+It's reactive by nature and allows for both OO and functional programming models.
+
+Over time additional libraries have been added to ESP to help build very large Single Page Apps (SPAs) in React. 
 Some high level features include:
 * Multiple models - a single `Router` can host multiple dependent or independent models with corresponding views and their own render cycles.
 * Different state management patterns - use either object orientated or functional/immutable paradigms. 
@@ -29,9 +33,9 @@ Some high level features include:
 {% capture info_1 %}
 The core ESP pattern was created before Redux or Flux were widely popular, as it turns out it's a very similar pattern. 
 ESP could be thought of as an implementation of the uni directional message flow pattern.
-It's core use case was to build complex real time SPAs with multiple independent views.
+It's core use case was to build complex real time reactive SPAs with multiple independent views.
 Overtime it's evolved but the core use case has not changed.
-This use case has steered the additional ESP libraries which provide many features for large composite application development.
+This use case has steered the additional ESP libraries, they provide many features for large composite application development.
 {% endcapture %}
 {% include callout-info.html title="How Does ESP Relate to Redux or Flux Architectures?" content=info_1 %}
 
@@ -40,14 +44,14 @@ This use case has steered the additional ESP libraries which provide many featur
 ESP tends to work well if you have these sorts of requirements:
 
 * You're building large composite application, potentially with multiple development teams. 
-* You're application needs be multi teared and decoupled - views can be grouped into modules, services can be reused amongst modules/views.
-* You building a 'micro front end' Single Page Application application and want to release different parts of it independently. 
+* You're application is multi-tiered and decoupled - views can be grouped into modules, services can be reused amongst modules/views.
+* You building a 'micro front end' SPA and want to release different parts of it independently. 
 * You are dealing with a large amount of state, complex screens with 20-200+ inputs, various workflows or maybe different representations of the same data.
 * Your have real time requirements and need reactive modeling APIs to manage complex business logic.
 
 ## Where can it be used?
 
-ESP can be used on both client and servers; anywhere you have complex real-time and in-memory state that requires modelling.
+ESP can be used on both client and servers, anywhere you have complex real-time and in-memory state that requires modelling.
 
 Within your application you may have several independent areas that manage complex state, each of these could be candidates for ESP.
 
@@ -55,12 +59,3 @@ Within your application you may have several independent areas that manage compl
 *	It can be used to model things to that don't have a screen - log in flows, app bootstraping, notifications.
 *	On the server you might use it to model push-based user state and general internal server state. 
     It provides a deterministic method to modify and observe such state.
-
-## Talks
-
-While a bit dated, the below 25min talk on ESP at the [React London Meetup](https://meetup.react.london/) covers core concepts which are still valid today.
-
-{% include video id="Pj-RakjfHDI?start=333" provider="youtube" %}
-
-Slides for the talk are available [here](http://goo.gl/40jie4).
-
