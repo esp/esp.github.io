@@ -12,7 +12,7 @@ The below diagram shows a high level view of the interactions.
 
 ![](../../../images/oo-standard-flow.png){: .align-center}
 
-The below TypeScript snippet shows this in practice (emulating the view). 
+The below TypeScript snippet shows this in practice (emulating the view).
 
 <p class="codepen" data-height="990" data-theme-id="dark" data-default-tab="js" data-user="KeithWoods" data-slug-hash="JjoQNJq" style="height: 990px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="esp-docs-oo-example">
   <span>See the Pen <a href="https://codepen.io/KeithWoods/pen/JjoQNJq">

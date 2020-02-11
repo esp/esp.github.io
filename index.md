@@ -59,3 +59,11 @@ Within your application you may have several independent areas that manage compl
 *	It can be used to model things to that don't have a screen - log in flows, app bootstraping, notifications.
 *	On the server you might use it to model push-based user state and general internal server state. 
     It provides a deterministic method to modify and observe such state.
+
+## Talks
+
+While a bit dated (particularly around OO vs Immutable), the below 25min talk on ESP at the [React London Meetup](https://meetup.react.london/) covers core concepts which are still valid today.
+
+{% include video id="Pj-RakjfHDI?start=333" provider="youtube" %}
+
+Slides for the talk are available [here](http://goo.gl/40jie4).
