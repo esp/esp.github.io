@@ -70,6 +70,7 @@ The `Router` needs to manage how the above interactions happen deterministically
 Given any handler or observer registered with the `Router` could itself publish events or observe other models, the `Router` needs an internal event queue and processing loop. 
 This loop is called the Dispatch Loop. 
 
+<a name="dispatch-loop"></a>  
 ## Dispatch Loop
 
 The dispatch loop exists to make event processing deterministic.
