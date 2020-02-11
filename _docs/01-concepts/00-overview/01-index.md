@@ -57,22 +57,22 @@ Both have their trade offs, however over time there is defiantly a move towards 
 
 ## Composite application framework
 
-The below box diagram shows most of the moving parts in a complete ESP application.
+The below box diagram shows most of the moving parts in a complete ESP application. 
   
 ![](/images/esp-overview.png)
 
 Points of note:
 
-* The entire application has access to a container which can store app wide services/object.
+* The entire application has access to a [container](../04-esp-js-di/01-index.md) which can store app wide services/object.
 * A higher level shell manages common parts of the application and owns bootstrapping modules based on custom logic.
   How to do this isn't prescribed as often applications have specific requirements here (i.e. login first, then load, load via dynamic `import` statements, load at once etc, load based on entitlements).
-* The esp module loader can be used to bootstrap modules. 
+* The esp module loader (from [esp-js-ui](../05-esp-js-ui/01-index.md)) can be used to bootstrap modules. 
   This will follow an orchestrated, asynchronous to load modules into the ui.
   Each module gets is't own container which is a child container of the applications.  
 * Modules register themselves with the system which allows other unrelated code to interact with them. 
   For example, the shell could build a menu of views which could be opened.
-* When a view is to be created, it's `ViewFactory` is invoked. 
-  It decides how to build the view (OO, or immutable, or custom if you want).
-  Each view gets a container, it's container is a child of the modules (it can see objects scoped to the module or the application).
+* When a view is to be created, it's `ViewFactory` (from [esp-js-ui](../05-esp-js-ui/01-index.md)) is invoked. 
+  It decides how to build the view ([OO](../01-esp-js/04-oo-modeling.md), or [immutable](../02-esp-js-polimer/01-index.md), or custom if you write an adapter for the router).
+  Each view gets a [container](../04-esp-js-di/01-index.md), it's container is a child of the modules (it can see objects scoped to the module or the application).
   Multiple view instances can be created, these operate independently of each other. 
 * Views can add or remove themselves from one or more regions. 

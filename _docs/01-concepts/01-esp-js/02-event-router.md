@@ -5,9 +5,10 @@ classes: wide
 ---
 
 The event router is the heart of an esp application. 
+It can be thought of as a reactive non blocking event bus which introduces a concurrency model for all state mutations across all models it manages. 
 There is typically one instance of the router and it's used by all models.
 
-It easy to create.
+You can create one like this:
 
 ```typescript
 import { Router } from 'esp-js';
@@ -109,6 +110,7 @@ This is modeled on [RxJs's](https://github.com/Reactive-Extensions/RxJS) observa
 {% capture info_1 %}
 The push based model of Rx is ideal for pub/sub scenarios where state needs to be combined from many differing streams.
 However the full Rx API isn't suitable as introduction of asynchronicity and other methods that would result in state being held in observable streams would break the deterministic staged workflow that the `Router` owns.
+
 For example, a deferred model change by way of an asynchronous operation would happen outside of the [state change workflow](03-state-change-workflow.md).
 Then there is no guarantee the model would be still in a state suitable once the deferred event arrives.
 Similarly, relational operators combine event streams and store state in observable objects/closures, when a final result yields the underlying model may not be in a state suitable for the target result.
