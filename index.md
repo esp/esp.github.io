@@ -9,17 +9,20 @@ ESP gives you the ability to manage changes to a model in a deterministic event 
 It does this by adding specific processing workflow around changes to state. 
 
 ESP was born out of the need to manage complex streaming state in reactive applications.
-Typically with pure reactive application, state gets held up in observable sequences, there is no central model to manage manage state in these sequences.
-If different sequences require the same state, or there is subtle ordering in how you need to work with these sequences, you find yourself constantly refactoring them.
+A pitfall of pure reactive applications is that state gets held up in observable sequences, there is no central business model to manage state in these sequences.
+Streaming reactive patterns are great for pure data or event procurement, triggering workflows and so on, however are poor for complex business modeling.
 Inherently, observable logic often gets intermingled with business modeling making both reasoning and maintenance hard.
-It's almost impossible to write clean business code without observable abstractions getting in the way. 
-Streaming reactive patterns are great for pure data or event procurement, but are poor for complex state processing.
+Business modeling requires a more structured approach that's free from observable plumbing, easy reason with, easy to test and easier to maintain. 
 
-ESP solves this by putting models at the forefront of your design yet still allowing your application to remain reactive. 
+ESP solves this by placing an ordered queue of state change events in front of a well structured model.
+The models in your application can be either immutable or object oriented, and are by and large free from reactive plumbing concerns.
+Business modeling is more deteministic, well structured and testable as the model only ever changes by one event at a time.
 Central to ESP's design is an event `Router`.
-This object manages both state change and state observation workflow for all models in the system.
-It does this by providing an event publishing interface to change state, an event observation interface to mutate state, and finally a model observation interface to watch state. 
-It's reactive by nature and allows for both OO and functional programming models.
+This object manages the state change workflow for all models in the system.
+It does this by providing 1) an event publishing interface to change state, 2) an event observation interface to mutate state, and 3) a model observation interface to observe state. 
+The below diagram shows this.
+
+![](./images/esp-overview-reactive.png){: .align-center}
 
 Over time additional libraries have been added to ESP to help build very large Single Page Apps (SPAs) in React. 
 Some high level features include:
