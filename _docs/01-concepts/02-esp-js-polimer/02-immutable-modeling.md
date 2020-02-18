@@ -9,4 +9,4 @@ permalink: /concepts/esp-js-polimer/immutable-modeling/
 
 ## Asynchronous Operations with Immutable Models 
 
-![](../../../images/immutable-async-flow.png){: .align-center}
+![](../../../images/esp-polimer-async-flow.png){: .align-center}
