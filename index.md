@@ -19,7 +19,7 @@ The models in your application can be either immutable or object oriented, and a
 Business modeling is more deteministic, well structured and testable as the model only ever changes by one event at a time.
 Central to ESP's design is an event `Router`.
 This object manages the state change workflow for all models in the system.
-It does this by providing 1) an event publishing interface to change state, 2) an event observation interface to mutate state, and 3) a model observation interface to observe state. 
+It does this by providing A) an event publishing interface to change state, B) an event observation interface to mutate state, and C) a model observation interface to observe state. 
 The below diagram shows this.
 
 ![](./images/esp-overview-reactive.png){: .align-center}
