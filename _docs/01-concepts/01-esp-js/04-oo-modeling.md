@@ -10,7 +10,7 @@ You can use standard OO patterns and abstractions to manage your state.
 
 The below diagram shows a high level view of the interactions. 
 
-![](../../../images/oo-standard-flow.png){: .align-center}
+![](../../../images/gslides-oo-standard-flow.png){: .align-center}
 
 The below TypeScript snippet shows this in practice (emulating the view).
 
@@ -66,7 +66,7 @@ The below **pseudo** code has a simplistic example of a gateway object.
 
 The below diagram outlines the typical flow in more details.
 
-![](../../../images/oo-async-flow.png){: .align-center}
+![](../../../images/gslides-oo-async-flow.png){: .align-center}
 
 ## To OO or Not to OO?
 There are some downsides to OO programing in the React world.

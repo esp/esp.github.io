@@ -7,7 +7,7 @@ When an event is published to the `Router` it dispatches the event to event obse
 This consists of `preProcess` and `postProcess` hooks per [dispatch loop](./02-event-router.md#dispatch-loop), and a series of observation stages (represented by the `ObservationStage` enumeration) for each event in the queue.
 The below diagram shows the flow.
   
-![](../../../images/state-workflow.png){: .align-center}
+![](../../../images/gslides-state-workflow.png){: .align-center}
 
 The staged workflow exists to allow finer control in applying events to the model.
 In edge case scenarios a developer may want a given entity to receive an event first, then let other entities receive it.
