@@ -22,7 +22,7 @@ This object manages the state change workflow for all models in the system.
 It does this by providing A) an event publishing interface to change state, B) an event observation interface to mutate state, and C) a model observation interface to observe state. 
 The below diagram shows this.
 
-![](./images/esp-overview-reactive.png){: .align-center}
+![](./images/gslides-overview-reactive.png){: .align-center}
 
 Over time additional libraries have been added to ESP to help build very large Single Page Apps (SPAs) in React. 
 Some high level features include:
