@@ -8,52 +8,23 @@ The event router is the heart of an esp application.
 It can be thought of as a reactive non blocking event bus which introduces a concurrency model for all state mutations across all models it manages. 
 There is typically one instance of the router and it's used by all models.
 
-You can create one like this:
+The below diagram shows it's core interfaces. 
 
-```typescript
-import { Router } from 'esp-js';
-const router = new Router();
-```
+![](../../../images/gslides-router.png){: .align-center}
 
-All models in an application are registered with the `Router`.
+The snippet below shows each interface being used.
 
-```typescript
-const myModel = {};
-router.addModel('myModelId', myModel);
-```
+<p class="codepen" data-height="605" data-theme-id="dark" data-default-tab="js" data-user="KeithWoods" data-slug-hash="RwPGKdx" style="height: 605px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="ESP Router API Example">
+  <span>See the Pen <a href="https://codepen.io/KeithWoods/pen/RwPGKdx">
+  ESP Router API Example</a> by Keith (<a href="https://codepen.io/KeithWoods">@KeithWoods</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
+</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+<br />
 
-{% capture info_1 %}
 The registered model will always be some form of JavaScript object, in the above an object literal.
 This instance never changes.
 This instance can be an [OO model](./04-oo-modeling.md) or a more immutable type managed by plumbing such as [esp-js-polimer](../02-esp-js-polimer/01-index.md).
-{% endcapture %}
-{% include callout-info.html content=info_1 %}
-
-Handlers can be wire up to the `Router`.
-
-```typescript
-router
-    .getEventObservable('myModelId', 'someEvent')
-    .subscribe(({model, context} = envelope)=> {
-        // modify/replace model state by handling the 'someEvent'
-    });
-```
-
-Events can be published to the model.
-
-```typescript
-router.publishEvent('myModelId', 'someEvent', { data: 'some-data' });
-```
-
-Observers can observe the model:
-
-```typescript
-router
-    .getModelObservable('myModelId')
-    .subscribe(model => {
-       // map to props and re-render
-    });
-```
 
 {% capture tip_1 %}
 In practice you tend not to directly interact with the `Router.getModelObservable(...)` and `Router.getEventObservable(...)` APIs, framework code will do that for you.
@@ -67,7 +38,7 @@ The [examples](../../03-examples/index.md) show how to do this.
 {% include callout-success.html content=tip_1 %}
 
 The `Router` needs to manage how the above interactions happen deterministically. 
-Given any handler or observer registered with the `Router` could itself publish events or observe other models, the `Router` needs an internal event queue and processing loop. 
+Given any handler or observer registered with the `Router` could itself publish events or observe other models, the `Router` needs internal event queues per model and a processing loop to do this. 
 This loop is called the Dispatch Loop. 
 
 <a name="dispatch-loop"></a>  
