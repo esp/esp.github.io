@@ -68,6 +68,7 @@ The below diagram outlines the typical flow in more details.
 
 ![](../../../images/gslides-oo-async-flow.png){: .align-center}
 
+<a name="oo-woes"></a>  
 ## To OO or Not to OO?
 There are some downsides to OO programing in the React world.
 

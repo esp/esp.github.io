@@ -86,5 +86,11 @@ However the full Rx API isn't suitable as introduction of asynchronicity and oth
 For example, a deferred model change by way of an asynchronous operation would happen outside of the [state change workflow](03-state-change-workflow.md).
 Then there is no guarantee the model would be still in a state suitable once the deferred event arrives.
 Similarly, relational operators combine event streams and store state in observable objects/closures, when a final result yields the underlying model may not be in a state suitable for the target result.
+
+#### Does this matter?
+<br />
+Not really, you rarely use the underlying reactive interface. 
+[esp-js-polimer](../02-esp-js-polimer/01-index.md) does use RXJS for it's event streams implement as those streams do warrant a full featured reactive API.
+
 {% endcapture %}
 {% include callout-info.html content=info_1 title="Why not use Rx?" %}
