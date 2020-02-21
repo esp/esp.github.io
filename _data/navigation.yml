@@ -27,14 +27,12 @@ concepts:
   - title: esp-js-polimer
     url: /concepts/esp-js-polimer/
     children:
-      - title: "Immutable Modeling"
-        url: /concepts/esp-js-polimer/immutable-modeling/
+      - title: "Model Builder"
+        url: /concepts/esp-js-polimer/model-builder/
       - title: "State Handlers"
         url: /concepts/esp-js-polimer/state-handlers/
       - title: "Event Streams"
         url: /concepts/esp-js-polimer/event-streams/
-      - title: "Model Builder"
-        url: /concepts/esp-js-polimer/model-builder/
   - title: esp-js-react
     url: /concepts/esp-js-react/
     children:
