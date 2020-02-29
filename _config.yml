@@ -55,7 +55,9 @@ defaults:
   - scope:
       path: "_docs/04-source"
     values:
-      layout: splash
+      layout: single
+      sidebar:
+        nav: "source"
   - scope:
       path: "_docs/05-roadmap"
     values:

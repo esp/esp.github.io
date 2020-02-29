@@ -12,7 +12,7 @@ ESP was born out of the need to manage complex streaming state in reactive appli
 A pitfall of pure reactive applications is that state gets held up in observable sequences, there is no central business model to manage state in these sequences.
 Streaming reactive patterns are great for pure data or event procurement, triggering workflows and so on, however are poor for complex business modeling.
 Inherently, observable logic often gets intermingled with business modeling making both reasoning and maintenance hard.
-Business modeling requires a more structured approach that's free from observable plumbing, easy reason with, easy to test and easier to maintain. 
+Business modeling requires a more structured approach that's free from observable plumbing, easier to reason with, test and maintain. 
 
 ESP solves this by placing an ordered queue of state change events in front of a well structured model.
 The models in your application can be either immutable or object oriented, and are by and large free from reactive plumbing concerns.

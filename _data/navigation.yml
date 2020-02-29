@@ -78,3 +78,9 @@ concepts:
         url: /concepts/esp-js-ui/state-persistence/
       - title: "Logging"
         url: /concepts/esp-js-ui/logging/
+
+source:
+  - title: Overview
+    url: /source/
+  - title: Releasing
+    url: /source/releasing/

@@ -18,3 +18,13 @@ Overview of the bits:
   The state handlers are responsible for updating those states.
 * [Event Streams](./04-event-streams.md) - these streams simply have 'event in, event out' semantics. 
   They are RXJS observable streams which are used for side effects and asynchronous operations.   
+
+## External Dependencies
+
+{% include draftdocs.html %}
+
+esp-js-polimer relies on lerna, but it does not re bundle it.
+
+TODO update guidance here
+
+ 

@@ -14,12 +14,8 @@ The below diagram shows it's core interfaces.
 
 The snippet below shows each interface being used.
 
-<p class="codepen" data-height="605" data-theme-id="dark" data-default-tab="js" data-user="KeithWoods" data-slug-hash="RwPGKdx" style="height: 605px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="ESP Router API Example">
-  <span>See the Pen <a href="https://codepen.io/KeithWoods/pen/RwPGKdx">
-  ESP Router API Example</a> by Keith (<a href="https://codepen.io/KeithWoods">@KeithWoods</a>)
-  on <a href="https://codepen.io">CodePen</a>.</span>
-</p>
-<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+<script src="https://gist.github.com/KeithWoods/08d96239c6805a69582953bcc08a6ebd.js"></script>
+
 <br />
 
 The registered model will always be some form of JavaScript object, in the above an object literal.
