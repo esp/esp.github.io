@@ -25,6 +25,6 @@ Overview of the bits:
 
 esp-js-polimer relies on lerna, but it does not re bundle it.
 
-TODO update guidance here
+TODO update guidance here   
 
  
