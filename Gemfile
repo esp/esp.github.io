@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "minimal-mistakes-jekyll", "~> 4.17.2"
+gem "minimal-mistakes-jekyll", "~> 4.26.2"
 
 # HACK to workaround
 # GitHub Metadata: Error processing value 'repo_pages_info':
@@ -9,3 +9,8 @@ gem "minimal-mistakes-jekyll", "~> 4.17.2"
 # gem 'faraday', '0.17.3'
 
 gem 'github-pages', group: :jekyll_plugins
+
+# After updating ot jekyll 4.2.2 I was getting the error reported here:
+# https://github.com/jekyll/jekyll/issues/8523
+# Fix is to add webrick
+gem "webrick", "~> 1.8"

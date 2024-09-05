@@ -27,6 +27,8 @@ concepts:
   - title: esp-js-polimer
     url: /concepts/esp-js-polimer/
     children:
+      - title: "Model (Store)"
+        url: /concepts/esp-js-polimer/model-store/
       - title: "Model Builder"
         url: /concepts/esp-js-polimer/model-builder/
       - title: "State Handlers"

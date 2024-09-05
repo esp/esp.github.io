@@ -13,6 +13,7 @@ The below diagram shows polimer as a layer between the router and the model.
 ![](../../../images/gslides-polimer-overview.png){: .align-center}
 
 Overview of the bits:
+* [Model (Store)](./02-model-store.md) - an introduction to what consatutes a Model (store) in esp-js-polimer.
 * [Model Builder](./02-model-builder.md) - a fluent API that hangs off the `Router`, make it easy to create the pluming required for a new model.
 * [Model & State Handlers](./03-state-handlers.md) - the model in a polimer implementation is effectively a root entity with a series of immutable states which hang of it. 
   The state handlers are responsible for updating those states.
