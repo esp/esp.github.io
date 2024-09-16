@@ -32,6 +32,11 @@ You can register an object using one of three methods:
   It's [lifetime management](./06-lifetime-management.md) is `singletonPerContainer`.
   It can be resolved using the `identifier` or as part of the [group](./04-object-resolution.md#resolve-groups) `mySimilarObjects`. 
   
+  In most cases, the argument you pass to `inject()` will be a string identifying another dependency. 
+  The container internally calls these 'dependency keys'.
+  There are more advanced cases where these dependency keys can be objects which reference other code to create the item required for injection.
+  See [dependency resolvers](./08-dependency-resolvers.md);
+
 * `container.registerInstance(identifier, objectInstance)`.
 
   You can use `registerInstance` to register an existing instance with the given string `identifier`.
