@@ -31,11 +31,11 @@ concepts:
   - title: esp-js-react
     url: /concepts/esp-js-react/
     children:
-      - title: "Router Provider"
-        url: /concepts/esp-js-react/router-provider/
-      - title: "Dynamic View Binding"
-        url: /concepts/esp-js-react/dynamic-view-binding/
-      - title: "Rendering a View"
+      - title: "EspApp"
+        url: /concepts/esp-js-react/esp-app/
+      - title: "RegionView"
+        url: /concepts/esp-js-react/region-view/
+      - title: "Rendering a view"
         url: /concepts/esp-js-react/rendering-a-view/
   - title: esp-js-di
     url: /concepts/esp-js-di/
