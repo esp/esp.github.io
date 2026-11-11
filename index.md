@@ -41,7 +41,7 @@ ESP works well if:
 * You have a lot of state: complex screens with 20 to 200 inputs, many workflows, or different views of the same data.
 * You have real-time data and complex business logic to model.
 
-## Where can it be used?
+## Where can you use ESP?
 
 You can use ESP on the client or the server, anywhere you have complex real-time state in memory.
 
