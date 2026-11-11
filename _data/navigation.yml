@@ -40,21 +40,21 @@ concepts:
   - title: esp-js-di
     url: /concepts/esp-js-di/
     children:
-      - title: "Creating a Container"
+      - title: "Creating a container"
         url: /concepts/esp-js-di/creating-a-container/
-      - title: "Object Registration"
+      - title: "Object registration"
         url: /concepts/esp-js-di/object-registration/
-      - title: "Object Resolution"
+      - title: "Object resolution"
         url: /concepts/esp-js-di/object-resolution/
-      - title: "Object Factories"
+      - title: "Object factories"
         url: /concepts/esp-js-di/object-factories/
-      - title: "Lifetime Management"
+      - title: "Lifetime management"
         url: /concepts/esp-js-di/lifetime-management/
-      - title: "Child Containers"
+      - title: "Child containers"
         url: /concepts/esp-js-di/child-containers/
-      - title: "Dependency Resolvers"
+      - title: "Dependency resolvers"
         url: /concepts/esp-js-di/dependency-resolvers/
-      - title: "Why no Annotations?"
+      - title: "Why no annotations?"
         url: /concepts/esp-js-di/why-no-annotations/
   - title: "esp-js-ui"
     url: /concepts/esp-js-ui/

@@ -1,73 +1,124 @@
 ---
-title: Object Registration 
+title: Object registration
 permalink: /concepts/esp-js-di/object-registration/
 ---
 
+You register an object with the container under a string identifier, then resolve it by that identifier.
+
 {% capture info_1 %}
-JavaScript doesn't have a type system which makes containers a little cumbersome to use. 
-Typically in typed languages you'd utilise information provided by the type system to aid in dependency resolution and injection.
-However without such a system all is not lost, we can simply use strings (i.e. 'identifiers') to identify objects to construct.
+Typed languages use the type system to find dependencies.
+JavaScript has no types at runtime, so you use strings, called identifiers, to name the objects to build.
 {% endcapture %}
-{% include callout-info.html content=info_1 %}
+{% include callout-info.html content=info_1 title="Why strings?" %}
 
-You can register an object using one of three methods:
+There are three ways to register an object.
 
-* `container.register(identifier, Item)`.
+## Register a class or a prototype
 
-  This registers either a constructor function OR an object prototype `Item` using the given string `identifier`.
+`container.register(identifier, item)` registers a class, or an object to use as a prototype, under `identifier`.
+Chain calls on the result to change the registration:
 
-  You can chain calls to alter the registration settings:
-  
-  ```javascript
-    let identifier = 'itemKey1';
-    container
-        .register('identifier', Item)
-        .inject('otherDependencyIdentifier1', 'otherDependencyIdentifier1')
-        .singletonPerContainer()
-        .inGroup('mySimilarObjects');
-  ```
+```ts
+import { Container } from 'esp-js-di';
 
-  Here we register `Item` using the string `identifier`. 
-  We state that it requires dependencies `otherDependencyIdentifier1` and `otherDependencyIdentifier1`. 
-  It's [lifetime management](./06-lifetime-management.md) is `singletonPerContainer`.
-  It can be resolved using the `identifier` or as part of the [group](./04-object-resolution.md#resolve-groups) `mySimilarObjects`. 
-  
-  In most cases, the argument you pass to `inject()` will be a string identifying another dependency. 
-  The container internally calls these 'dependency keys'.
-  There are more advanced cases where these dependency keys can be objects which reference other code to create the item required for injection.
-  See [dependency resolvers](./08-dependency-resolvers.md);
+class Logger {}
+class Settings {}
+class Item {
+    constructor(public logger: Logger, public settings: Settings) {}
+}
 
-* `container.registerInstance(identifier, objectInstance)`.
+const container = new Container();
+container.register('logger', Logger);
+container.register('settings', Settings);
 
-  You can use `registerInstance` to register an existing instance with the given string `identifier`.
-    
-* `container.registerFactory(identifier, factory)`.
+const identifier = 'item';
+container
+    .register(identifier, Item)
+    .inject('logger', 'settings')
+    .singletonPerContainer()
+    .inGroup('items');
+```
 
-  This registers a creation factory using the given string `identifier`. 
-  The factory is a function that must return a new object instance. 
-  The factory will receive the current container as a first parameter.
-  Any additional arguments passed during the `resolve` call will be passed to the factory.
-  
-  ```javascript
-    container
-        .registerFactory('fooId', (container, ...additionalDependencies) => {
-              let fooDependency = container.resolve('fooDependencyId');  
-              return new Foo(fooDependency, ...additionalDependencies);
-        })
-        .transient();
-    
-    let foo = container.resolve('fooId', 1, 2, 3);
-  ```
-  
-  Here we register a factory that will resolve a `Foo`. 
-  We then resolve an instance (`foo`) passing some additional arguments. 
-  Our creation factory resolves an additional dependency, then passes this dependency, plus the additional dependencies `1, 2, 3` to `Foo`s constructor and returns it.
-  It's registered using a transient scope so each time you resolve it, the factor will be invoked to resolve a new `Foo` instance. 
-  
+This registers `Item` under the value of `identifier`, `'item'`:
 
-{% capture info_2 %}
-We need to manually specify objects dependencies at registration time. 
-This is because there are no means available to inspect arguments required for `constructors` or `init` methods at object instantiation/initialisation time.
-We specify dependencies via `inject`
-{% endcapture %}
-{% include callout-info.html content=info_2 %}
+- `inject('logger', 'settings')` lists its dependencies, in the order its constructor takes them.
+- Its [lifetime](./06-lifetime-management.md) is `singletonPerContainer`.
+- You can resolve it by its identifier, or as part of the [group](./04-object-resolution.md#resolve-groups) `items`.
+
+The container can't read a constructor's parameters, so you list the dependencies with `inject()`.
+Each argument to `inject()` is usually the identifier of another registration.
+The container calls these arguments dependency keys.
+A dependency key can also be an object that names a [dependency resolver](./08-dependency-resolvers.md).
+
+`register` throws if the item is a string or a number. Use `registerInstance` for those.
+
+## Register an instance
+
+`container.registerInstance(identifier, instance, isExternallyOwned = true)` registers an object you already created.
+It returns nothing, so you can't chain calls on it.
+
+```ts
+import { Container } from 'esp-js-di';
+
+const container = new Container();
+const settings = { theme: 'dark' };
+container.registerInstance('settings', settings);
+
+console.log(container.resolve('settings') === settings); // true
+```
+
+By default the container doesn't dispose the instance. See [lifetime management](./06-lifetime-management.md#externally-owned-instances).
+
+## Register a factory
+
+`container.registerFactory(identifier, factory)` registers a function that creates the object.
+The container calls the factory with itself as the first argument, then any additional dependencies passed to `resolve`.
+The factory returns the new object.
+
+```ts
+import { Container } from 'esp-js-di';
+
+class FooDependency {}
+class Foo {
+    public values: number[];
+    constructor(public dependency: FooDependency, ...values: number[]) {
+        this.values = values;
+    }
+}
+
+const container = new Container();
+container.register('fooDependency', FooDependency);
+container
+    .registerFactory('foo', (container, ...additionalDependencies) => {
+        const fooDependency = container.resolve<FooDependency>('fooDependency');
+        return new Foo(fooDependency, ...additionalDependencies);
+    })
+    .transient();
+
+const foo = container.resolve<Foo>('foo', 1, 2, 3);
+console.log(foo.values); // [ 1, 2, 3 ]
+```
+
+The factory resolves `fooDependency`, then passes it and the additional dependencies `1, 2, 3` to the `Foo` constructor.
+The registration is `transient`, so each `resolve` calls the factory again and returns a new `Foo`.
+
+If you add `inject()` to a factory registration, the factory gets the container, then the injected dependencies, then the additional dependencies:
+
+```ts
+import { Container } from 'esp-js-di';
+
+class FooDependency {}
+class Foo {
+    constructor(public dependency: FooDependency, public name: string) {}
+}
+
+const container = new Container();
+container.register('fooDependency', FooDependency);
+container
+    .registerFactory('foo', (container, fooDependency, name) => new Foo(fooDependency, name))
+    .inject('fooDependency')
+    .transient();
+
+const foo = container.resolve<Foo>('foo', 'theFoo');
+console.log(foo.name); // theFoo
+```

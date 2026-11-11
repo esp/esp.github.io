@@ -3,58 +3,68 @@ title: Child containers
 permalink: /concepts/esp-js-di/child-containers/
 ---
 
-Child containers can be used to manage and scope a set of related objects.
-They inherit configuration from the parent however can be re-configured.
-They also inherit instances from their parent depending upon the lifetime management of the objects in question. 
+A child container scopes a set of related objects: it resolves its parent's registrations, adds its own, and disposes its objects when you dispose it.
 
-Create a child container by calling `createChildContainer` on a parent;
-```javascript
-let container = new Container();
-let childcontainer = container.createChildContainer();
+Create a child container with `createChildContainer()`:
+
+```ts
+import { Container } from 'esp-js-di';
+
+const container = new Container();
+const childContainer = container.createChildContainer();
 ```
 
-### Lifetime Management in Child Containers
+## Lifetimes in child containers
 
-Depending upon registration configurations, objects resolved from a child container will either be owned by the child container or the parent.
+The registration's [lifetime](./06-lifetime-management.md) sets which container builds and holds the object:
 
-```javascript
-let Foo = { };
-let container = new Container();
-let childContainer = container.createChildContainer();
-container.register('foo', Foo); // defaults to singleton registration
-let foo1 = container.resolve('foo');
-let foo2 = childContainer.resolve('foo');
-console.log(foo1 == foo2); // true, same instance
+- A singleton is built and held by the container that has the registration, so a parent and its children share it.
+- A singleton per container is built and held by each container that resolves it.
+- A transient object is built by the container that resolves it, and no container holds it.
 
-container.register('fooAgain', Foo).singletonPerContainer();
-let foo3 = container.resolve('fooAgain');
-let foo4 = childContainer.resolve('fooAgain');
-console.log(foo3 == foo4); // false, different instance
-let foo5 = childContainer.resolve('fooAgain');
-console.log(foo4 == foo5); // true, same instance
+```ts
+import { Container } from 'esp-js-di';
+
+const foo = {};
+const container = new Container();
+const childContainer = container.createChildContainer();
+
+container.register('foo', foo); // a singleton by default
+const foo1 = container.resolve('foo');
+const foo2 = childContainer.resolve('foo');
+console.log(foo1 === foo2); // true, the same instance
+
+container.register('fooAgain', foo).singletonPerContainer();
+const foo3 = container.resolve('fooAgain');
+const foo4 = childContainer.resolve('fooAgain');
+console.log(foo3 === foo4); // false, a different instance
+const foo5 = childContainer.resolve('fooAgain');
+console.log(foo4 === foo5); // true, the same instance
 ```
 
-### Overriding Registrations
+## Override a registration
 
-The configuration of a child container can be overridden if required.
+A child container can register an identifier again. The new registration applies to the child only:
 
-```javascript
-let Foo = { };
-let container = new Container();
-container.register('foo', Foo); // defaults to singleton registration
+```ts
+import { Container } from 'esp-js-di';
 
-let childcontainer = container.createChildContainer();
-childcontainer.register('foo', Foo).transient();
+const foo = {};
+const container = new Container();
+container.register('foo', foo); // a singleton by default
 
-let foo1 = container.resolve('foo');
-let foo2 = container.resolve('foo');
-console.log(foo1 == foo2); // true, same instance
+const childContainer = container.createChildContainer();
+childContainer.register('foo', foo).transient();
 
-let foo3 = childcontainer.resolve('foo');
-console.log(foo2 == foo3); // false, different instance
+const foo1 = container.resolve('foo');
+const foo2 = container.resolve('foo');
+console.log(foo1 === foo2);
 
-let foo4 = childcontainer.resolve('foo');
-console.log(foo3 == foo4); // false, different instance
+const foo3 = childContainer.resolve('foo');
+console.log(foo2 === foo3);
+
+const foo4 = childContainer.resolve('foo');
+console.log(foo3 === foo4);
 ```
 
 Output:
@@ -65,99 +75,83 @@ false
 false
 ```
 
-## Resolving the Container
+If you register an identifier again in the same container after it was resolved, the container keeps returning the instance it already holds.
 
-Sometimes you have an object that requires the container to be injected. 
-While often thought of as an anti pattern, there are scenarios where this makes sense. 
-If the object is a 'bootstrapper' of sorts, i.e. it needs fine grained control over child containers and sub object graph resolution, injecting a container makes sense. 
-  
-When there are child containers at play, you'd expect objects who require a container, to be provide with the same container that build them, i.e. the child container in question. 
- 
-Lets look at an example:
+## Groups in child containers
 
-```javascript
-// a class that takes a container as a dependency
+A child container resolves its parent's groups.
+If the child adds a registration to a group with `inGroup()`, it starts a new group of the same name in the child.
+That group holds only the child's registrations, and the parent's group doesn't change.
+
+## Inject the owning container
+
+Some objects need the container itself, for example an object that creates child containers.
+Inject `EspDiConsts.owningContainer` to get the container that built the object:
+
+```ts
+import { Container, EspDiConsts } from 'esp-js-di';
+
 class Bootstrapper {
-    constructor(container) {
-        this._container = container; 
-    }
+    constructor(public container: Container) {}
 }
-```
 
-Lets look at the manual way of doing this:
-
-```javascript
-import { Container } from 'esp-js-di'; 
-let container = new Container();
-container.registerInstance('theRootContainer', container);
-container.register('bootstrapper', Bootstrapper).inject('theRootContainer');
-// bootstrapper will get injected with instance `container`
-let bootstrapper = container.resolve('bootstrapper');
-```
-
-This will work, but when there are child container at play it gets a bit messy as you have to register things manually each time a child is created.
-Typically you strive to keep child container re-configuration to a minimum for code maintainability reasons. 
-
-The `Container` supports a special injection key exposed as `EspDiConsts.owningContainer`.
-This key will ensure an object getting resolved gets it's owning container.
-Lets re-work the above example:
-
-```javascript
-import { Container, EspDiConsts } from 'esp-js-di'; 
-let container = new Container();
-container
-    .register('bootstrapper', Bootstrapper)
-    .inject(EspDiConsts.owningContainer);
-// bootstrapper will get injected with instance `container`, i.e. the container that created it.
-let bootstrapper = container.resolve('bootstrapper');
-```
-
-Objects injected with `EspDiConsts.owningContainer` and resolved from child containers will get the owning child container injected: 
-
-```javascript
-import { Container, EspDiConsts } from 'esp-js-di'; 
-let container1 = new Container();
+const container1 = new Container();
 container1
     .register('bootstrapper', Bootstrapper)
-    .transient() // resolve new `Bootstrapper` instance each time
+    .transient()
     .inject(EspDiConsts.owningContainer);
 
-// bootstrapper1 will get injected with `container1`
-let bootstrapper1 = container1.resolve('bootstrapper');
+const bootstrapper1 = container1.resolve<Bootstrapper>('bootstrapper');
+console.log(bootstrapper1.container === container1); // true
 
-// bootstrapper2 will get injected with `container2` as that's the container that created it.
-let container2 = container1.createChildContainer();
-let bootstrapper2 = container2.resolve('bootstrapper');
+const container2 = container1.createChildContainer();
+const bootstrapper2 = container2.resolve<Bootstrapper>('bootstrapper');
+console.log(bootstrapper2.container === container2); // true
 ```
 
-## Checking what's registered
+A child container injects itself only if the registration is `transient()` or `singletonPerContainer()`.
+A singleton is built by the container that has the registration, so it gets that container, even when you resolve it from a child.
 
-You can check if a dependency is registered using `.isRegistered(name)`.
-A group can be checked using `.isGroupRegistered(groupName):boolean`.
-Both these exist on a `container` object and will return a boolean result. 
+## Check what's registered
+
+`isRegistered(identifier)` and `isGroupRegistered(groupName)` return `true` if the container or one of its parents has the registration.
+Pass `{ searchParentContainers: false }` to check the container only:
+
+```ts
+import { Container } from 'esp-js-di';
+
+const container = new Container();
+container.register('foo', {}).inGroup('fooGroup');
+const childContainer = container.createChildContainer();
+
+console.log(childContainer.isRegistered('foo')); // true
+console.log(childContainer.isRegistered('foo', { searchParentContainers: false })); // false
+console.log(childContainer.isGroupRegistered('fooGroup', { searchParentContainers: false })); // false
+```
 
 ## Disposal
 
-When you call `.dispose()` on a container, that container will inspect any object it holds and if an object has a `dispose` function, it will be called.
-However it will not dispose transient-created objects or objects registered via `registerInstance('aKey', myInstance)`.
-Any child containers created from the disposed parent will also be disposed.  These child containers will in turn dispose of their registered instances.
+`dispose()` disposes the objects the container holds, then disposes its child containers.
+For which objects a container disposes, see [disposal](./06-lifetime-management.md#disposal).
 
-```javascript
+```ts
+import { Container } from 'esp-js-di';
+
 class Foo {
     dispose() {
         console.log('foo disposed');
     }
 }
 
-let container = new Container();
-
+const container = new Container();
 container.register('foo', Foo).singletonPerContainer();
-let foo1 = container.resolve('foo');
+container.resolve('foo');
 
-let childcontainer = container.createChildContainer();
-let foo2 = childcontainer.resolve('foo');
+const childContainer = container.createChildContainer();
+childContainer.resolve('foo');
 
 container.dispose();
+console.log(childContainer.isDisposed); // true
 ```
 
 Output:
@@ -165,4 +159,9 @@ Output:
 ```
 foo disposed
 foo disposed
+true
 ```
+
+Disposing a child container doesn't dispose its parent.
+The `isDisposed` property is `true` once a container is disposed.
+After that, its methods, such as `resolve` and `register`, throw `Container has been disposed`.

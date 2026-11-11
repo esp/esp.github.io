@@ -1,79 +1,94 @@
 ---
-title: Lifetime Management
+title: Lifetime management
 permalink: /concepts/esp-js-di/lifetime-management/
 ---
 
-An object’s lifetime can be controlled by the container in a number of ways.
+A registration's lifetime sets whether `resolve` returns a new object or one the container already holds.
 
-### Singleton
+## Singleton
 
-A singleton registration specifies the container will hold onto the object instance.
-Multiple calls to `resolve` with the same key will yield the same instance.
-When the container is disposed, the container will, for any registered instances with a `dispose` function, invoke that function.
+The container builds the object once, holds it, and returns the same instance on each `resolve`.
 
+```ts
+import { Container } from 'esp-js-di';
 
-```javascript
-let Foo = {};
-container.register('theFoo', Foo).singleton();
-let foo1 = container.resolve('theFoo');
-let foo2 = container.resolve('theFoo');
-console.log(foo1 == foo2); // true
+const container = new Container();
+container.register('theFoo', {}).singleton();
+
+const foo1 = container.resolve('theFoo');
+const foo2 = container.resolve('theFoo');
+console.log(foo1 === foo2); // true
 ```
 
-Note this is the default lifetime used and so the call to `.singleton()` is optional.
+Singleton is the default lifetime, so the call to `.singleton()` is optional.
 
-### Singleton Per Container
+## Singleton per container
 
-This is similar to a singleton however you get a single instance per [child container](./07-child-containers.md).
+Like a singleton, but each [child container](./07-child-containers.md) builds and holds its own instance.
 
-```javascript
-let Bar = {};
-container.register('theBar', Bar).singletonPerContainer();
-let bar1 = container.resolve('theBar');
-let bar2 = container.resolve('theBar');
-let childContainer = container.createChildContainer();
-let bar3 = childContainer.resolve('theBar');
-let bar4 = childContainer.resolve('theBar');
-console.log(bar1 == bar2); // true
-console.log(bar2 == bar3); // false
-console.log(bar3 == bar4); // true
+```ts
+import { Container } from 'esp-js-di';
+
+const container = new Container();
+container.register('theBar', {}).singletonPerContainer();
+
+const bar1 = container.resolve('theBar');
+const bar2 = container.resolve('theBar');
+const childContainer = container.createChildContainer();
+const bar3 = childContainer.resolve('theBar');
+const bar4 = childContainer.resolve('theBar');
+console.log(bar1 === bar2); // true
+console.log(bar2 === bar3); // false
+console.log(bar3 === bar4); // true
 ```
 
-### Transient
+## Transient
 
-This creates a new instance each time a call to `resolve(identifier)` or `resolveGroup(groupName)` is made.
-The container will not hold a reference to the instances created.
+The container builds a new object on each `resolve` or `resolveGroup`, and doesn't hold it.
 
-```javascript
-let Baz = {};
-container.register('theBaz', Baz).transient();
-let baz1 = container.resolve('theBaz');
-let baz2 = container.resolve('theBaz');
-console.log(baz1 == baz2); // false
+```ts
+import { Container } from 'esp-js-di';
+
+const container = new Container();
+container.register('theBaz', {}).transient();
+
+const baz1 = container.resolve('theBaz');
+const baz2 = container.resolve('theBaz');
+console.log(baz1 === baz2); // false
 ```
 
-### External
+## Disposal
 
-Like a singleton however the container won't dispose the object when it's disposed.
+`container.dispose()` calls `dispose()` on each object the container holds that has a `dispose` method.
+The container holds singletons and singletons per container, so it disposes those.
+It doesn't dispose transient objects, or instances that are externally owned.
 
-```javascript
-let Disposable = {
-    init() {
-        this.isDisposed = false;
-        return this;
-    },
+## Externally owned instances
+
+`registerInstance(identifier, instance, isExternallyOwned = true)` registers an object you created.
+By default the instance is externally owned: the container returns it like a singleton, but doesn't dispose it.
+Pass `false` as `isExternallyOwned` to have the container dispose it.
+
+```ts
+import { Container } from 'esp-js-di';
+
+class Connection {
+    isDisposed = false;
     dispose() {
         this.isDisposed = true;
     }
-};
-// Note registerInstance internally sets the lifetime type as 'external', 
-// You can pass false as the last argument if you want to change this. 
-// The container will then manage it as 'singleton' and dispose the instance at disposal time 
-container.registerInstance('disposable1', Object.create(Disposable).init());
-container.register('disposable2', Disposable);
-let disposable1 = container.resolve('disposable1');
-let disposable2 = container.resolve('disposable2');
+}
+
+const container = new Container();
+container.registerInstance('connection1', new Connection());
+container.register('connection2', Connection);
+
+const connection1 = container.resolve<Connection>('connection1');
+const connection2 = container.resolve<Connection>('connection2');
 container.dispose();
-console.log(disposable1.isDisposed); // false
-console.log(disposable2.isDisposed); // true
+console.log(connection1.isDisposed); // false
+console.log(connection2.isDisposed); // true
 ```
+
+`connection1` is externally owned, so the container doesn't dispose it.
+`connection2` is a singleton the container built, so the container disposes it.
