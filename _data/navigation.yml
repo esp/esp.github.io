@@ -11,8 +11,11 @@ main:
     url: /roadmap/
 
 concepts:
-  - title: overview
+  - title: "Overview"
     url: /concepts/overview/
+    children:
+      - title: "Migrating from v8"
+        url: /concepts/overview/migrating-from-v8/
   - title: esp-js
     url: /concepts/esp-js/
     children:

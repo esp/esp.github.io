@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="390" viewBox="0 0 960 390" font-family="sans-serif" font-size="14">
+  <title>Views and services publish events to the EventBus, which keeps one queue per store; each store's handlers change its model, and the model observers get the new model</title>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/>
+    </marker>
+  </defs>
+  <rect width="960" height="390" fill="#fff"/>
+
+  <g fill="none" stroke="#555" stroke-width="1.5">
+    <rect x="20" y="40" width="150" height="260" rx="6"/>
+    <rect x="290" y="40" width="190" height="260" rx="6"/>
+    <rect x="800" y="40" width="140" height="260" rx="6"/>
+  </g>
+
+  <g fill="#fff" stroke="#555" stroke-width="1.5">
+    <rect x="35" y="100" width="120" height="40" rx="4"/>
+    <rect x="35" y="200" width="120" height="40" rx="4"/>
+    <rect x="305" y="100" width="160" height="40" rx="4"/>
+    <rect x="305" y="200" width="160" height="40" rx="4"/>
+    <rect x="530" y="90" width="200" height="60" rx="4"/>
+    <rect x="530" y="190" width="200" height="60" rx="4"/>
+    <rect x="815" y="100" width="110" height="40" rx="4"/>
+    <rect x="815" y="200" width="110" height="40" rx="4"/>
+  </g>
+
+  <g fill="#333" text-anchor="middle">
+    <text x="95" y="68">Publishers</text>
+    <text x="385" y="68">EventBus</text>
+    <text x="870" y="68">Model observers</text>
+    <text x="95" y="125">Views</text>
+    <text x="95" y="225">Services</text>
+    <text x="385" y="125">Queue for 'todo'</text>
+    <text x="385" y="225">Queue for 'weather'</text>
+    <text x="630" y="115">Store 'todo'</text>
+    <text x="630" y="137">handlers change the model</text>
+    <text x="630" y="215">Store 'weather'</text>
+    <text x="630" y="237">handlers change the model</text>
+    <text x="870" y="125">TodoView</text>
+    <text x="870" y="225">WeatherView</text>
+    <text x="230" y="160">publishEvent</text>
+    <text x="765" y="110">model</text>
+    <text x="765" y="210">model</text>
+    <text x="480" y="372">Views publish the next events</text>
+  </g>
+
+  <g fill="none" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)">
+    <line x1="170" y1="170" x2="288" y2="170"/>
+    <line x1="465" y1="120" x2="528" y2="120"/>
+    <line x1="465" y1="220" x2="528" y2="220"/>
+    <line x1="730" y1="120" x2="813" y2="120"/>
+    <line x1="730" y1="220" x2="813" y2="220"/>
+    <path d="M 870 300 V 345 H 95 V 302" stroke-dasharray="6 4"/>
+  </g>
+</svg>
