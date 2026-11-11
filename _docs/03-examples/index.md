@@ -12,11 +12,13 @@ The esp-js repo has one example app, [example-app](https://github.com/esp/esp-js
 The app has two modules, each with one store and one view.
 
 The `todo` module is a to-do list in the `main` region:
+
 - a store built with `StoreBuilder`, with a class model that uses `immerable`;
 - event handlers that call methods on the draft, or change it directly;
 - a view that publishes events with `usePublishStoreEvent`.
 
 The `weather` module shows the current weather in the `weather` region:
+
 - a `WeatherService` registered as a singleton in the module's esp-js-di container;
 - an async `withInitialisation` that finds your location, then publishes the first events;
 - a preview handler that cancels a fetch while one is already running;
