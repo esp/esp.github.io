@@ -16,25 +16,18 @@ concepts:
   - title: esp-js
     url: /concepts/esp-js/
     children:
-      - title: "Event Router"
-        url: /concepts/esp-js/event-router/
-      - title: "State Change Workflow"
+      - title: "Event bus"
+        url: /concepts/esp-js/event-bus/
+      - title: "Store builder"
+        url: /concepts/esp-js/store-builder/
+      - title: "Effects"
+        url: /concepts/esp-js/effects/
+      - title: "State change workflow"
         url: /concepts/esp-js/state-change-workflow/
-      - title: "OO Modeling"
-        url: /concepts/esp-js/oo-modeling/
-      - title: "Talking to Other Models"
+      - title: "Talking to other stores"
         url: /concepts/esp-js/talking-to-other-models/
-  - title: esp-js-polimer
-    url: /concepts/esp-js-polimer/
-    children:
-      - title: "Model (Store)"
-        url: /concepts/esp-js-polimer/model-store/
-      - title: "Model Builder"
-        url: /concepts/esp-js-polimer/model-builder/
-      - title: "State Handlers"
-        url: /concepts/esp-js-polimer/state-handlers/
-      - title: "Event Streams"
-        url: /concepts/esp-js-polimer/event-streams/
+      - title: "Logging"
+        url: /concepts/esp-js/logging/
   - title: esp-js-react
     url: /concepts/esp-js-react/
     children:
@@ -78,5 +71,3 @@ concepts:
         url: /concepts/esp-js-ui/regions/
       - title: "State Persistence"
         url: /concepts/esp-js-ui/state-persistence/
-      - title: "Logging"
-        url: /concepts/esp-js-ui/logging/

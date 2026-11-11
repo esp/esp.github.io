@@ -1,24 +1,48 @@
 ---
-title: ESP-JS
+title: esp-js
 permalink: /concepts/esp-js/
 ---
 
-The main export in the esp-js package is the `Router`.
-This object effectively has a one responsibility - to deterministically manage how state changes are applied to the model.
-It's API allows for:
+The `esp-js` package holds the `EventBus`: you register stores on it, publish events to them, and observe the models they produce.
 
-* **event publishing** - provides a means to publish a event (aka a JS object) to change a models state.
-* **event delivery** - provides the ability to subscribe to events and apply event state to the model.
-* **model observation**  - provides the ability to be notified when a model changes. 
+## A counter
 
-The `Router` doesn't know about React, OO models or immutable models, it just knows how to take an event and apply it to a handler you register for that model. 
+```typescript
+import { EventBus } from 'esp-js';
 
-{% capture info_1 %}
-In reality the various bits in esp packages provide means you don't directly observe a model, or directly wire up a handler to have state changed.
-It's useful to know that a simple event bus is a play under the coves.
-It is however, common to publish events directly to a model so you can changes it's state.
+type CounterModel = { count: number };
 
-The [api example](https://github.com/esp/esp-js/tree/master/examples/esp-js-api) show these lower APIs at work.
-{% endcapture %}
-{% include callout-info.html content=info_1 %}
+const bus = new EventBus();
 
+bus.storeBuilder<CounterModel>('counter', { count: 0 })
+    .withEventHandler('Increment', (draft, event: { by: number }) => {
+        draft.count += event.by;
+    })
+    .build();
+
+bus.getStoreModelObservable<CounterModel>('counter')
+    .subscribe(model => console.log(model.count));
+
+bus.publishEvent('counter', 'Increment', { by: 1 });
+```
+
+Output:
+
+```
+0
+1
+```
+
+1. `storeBuilder` registers a store with the `storeId` `'counter'` and the initial model `{ count: 0 }`.
+2. `withEventHandler` adds a handler that changes the model when an `Increment` event arrives.
+3. `subscribe` prints `0` straight away, because the observable sends the current model to each new observer.
+4. `publishEvent` sends `Increment` to the store. The handler runs, and the observer prints the new model, `1`.
+
+## Pages in this section
+
+- [Event bus](./02-event-bus.md): publish events, read models, and handle errors.
+- [Store builder](./03-store-builder.md): register a store and its handlers.
+- [Effects](./04-effects.md): do async work and talk to services.
+- [State change workflow](./05-state-change-workflow.md): the order in which the bus runs handlers, effects, and observers.
+- [Talking to other stores](./06-talking-to-other-models.md): publish events from one store to another.
+- [Logging](./07-logging.md): the logger, levels, and sinks.

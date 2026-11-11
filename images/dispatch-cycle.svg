@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="760" viewBox="0 0 720 760" font-family="sans-serif" font-size="14">
+  <title>The steps the event bus takes for one store: a round, then effects, then one model update</title>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/>
+    </marker>
+  </defs>
+  <rect width="720" height="760" fill="#fff"/>
+
+  <g fill="#fff" stroke="#555" stroke-width="1.5">
+    <rect x="200" y="20" width="260" height="36" rx="4"/>
+    <rect x="200" y="86" width="260" height="36" rx="4"/>
+    <rect x="40" y="152" width="580" height="318" rx="6" stroke-dasharray="6 4"/>
+    <rect x="200" y="186" width="260" height="36" rx="4"/>
+    <rect x="70" y="252" width="520" height="132" rx="4"/>
+    <rect x="88" y="304" width="100" height="36" rx="4"/>
+    <rect x="215" y="304" width="100" height="36" rx="4"/>
+    <rect x="342" y="304" width="110" height="36" rx="4"/>
+    <rect x="479" y="304" width="90" height="36" rx="4"/>
+    <rect x="200" y="410" width="260" height="36" rx="4"/>
+    <rect x="160" y="500" width="340" height="36" rx="4"/>
+    <rect x="160" y="566" width="340" height="36" rx="4"/>
+    <rect x="160" y="632" width="340" height="36" rx="4"/>
+    <rect x="160" y="698" width="340" height="36" rx="4"/>
+  </g>
+
+  <g fill="#333" text-anchor="middle">
+    <text x="330" y="43">publishEvent()</text>
+    <text x="330" y="109">The store's event queue</text>
+    <text x="330" y="209">Pre event processor</text>
+    <text x="138" y="327">preview</text>
+    <text x="265" y="327">normal</text>
+    <text x="397" y="327">committed *</text>
+    <text x="524" y="327">final</text>
+    <text x="330" y="433">Post event processor</text>
+    <text x="330" y="523">Effects run, each with its own snapshot</text>
+    <text x="330" y="589">Did effects publish to this store?</text>
+    <text x="330" y="655">Observers get one model update</text>
+    <text x="330" y="721">Next store with queued events</text>
+  </g>
+
+  <g fill="#333">
+    <text x="56" y="174" font-weight="bold">Round (one immer produce)</text>
+    <text x="86" y="274">For each queued event, including events that handlers</text>
+    <text x="86" y="292">publish to this store:</text>
+    <text x="86" y="370">* only if a handler called commit() at the normal stage</text>
+    <text x="668" y="360">yes:</text>
+    <text x="668" y="378">next</text>
+    <text x="668" y="396">round</text>
+    <text x="340" y="623">no</text>
+  </g>
+
+  <g fill="none" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)">
+    <line x1="330" y1="56" x2="330" y2="86"/>
+    <line x1="330" y1="122" x2="330" y2="186"/>
+    <line x1="330" y1="222" x2="330" y2="252"/>
+    <line x1="188" y1="322" x2="215" y2="322"/>
+    <line x1="315" y1="322" x2="342" y2="322"/>
+    <line x1="452" y1="322" x2="479" y2="322"/>
+    <line x1="330" y1="384" x2="330" y2="410"/>
+    <line x1="330" y1="470" x2="330" y2="500"/>
+    <line x1="330" y1="536" x2="330" y2="566"/>
+    <line x1="330" y1="602" x2="330" y2="632"/>
+    <line x1="330" y1="668" x2="330" y2="698"/>
+    <polyline points="500,584 660,584 660,204 460,204"/>
+  </g>
+</svg>
