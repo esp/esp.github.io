@@ -8,7 +8,7 @@ The GitHub Pages documentation site for ESP (Evented State Processor), published
 
 ## Commands
 
-- **Build and serve locally:** `./dev-build.sh`. This needs Docker. It runs the `jekyll/jekyll` container (Jekyll 4.2.2), mounts `vendor/bundle` as the gem cache, and serves on http://127.0.0.1:4000. Changes to `_config.yml` take effect only after a server restart.
+- **Build and serve locally:** `./dev-build.sh`. This needs Docker. It runs the `jekyll/jekyll:4.2.2` container image, mounts `vendor/bundle` as the gem cache, and serves on http://127.0.0.1:4000. The site itself builds with Jekyll 3.9.5, from the `github-pages` gem in `Gemfile.lock`, the same as GitHub Pages. The script runs `docker run -it`, so it needs a terminal. Changes to `_config.yml` take effect only after a server restart.
 - **Update Ruby dependencies:** delete `Gemfile.lock`, then run `bundle install --path vendor/bundle`. `.bundle/config` pins `BUNDLE_PATH` to `vendor/bundle`, which is gitignored.
 
 ## Structure and how pages are wired
