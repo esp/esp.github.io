@@ -30,7 +30,7 @@ bus.storeBuilder<CounterModel>('counter', { count: 0 })
     .withEffect('Increment', (model) => {
         console.log('effect sees:', model.count);
     })
-    .withEventHandler('IncrementTwice', (draft, event, eventContext) => {
+    .withEventHandler('IncrementTwice', () => {
         bus.publishEvent('counter', 'Increment', {});
         bus.publishEvent('counter', 'Increment', {});
     })
@@ -134,7 +134,7 @@ isLoading: false data: { temperatureCelsius: 21 }
 
 - If an effect throws, the bus [halts](./02-event-bus.md#errors-and-halting), as it does for a handler.
 - The bus doesn't catch a rejected promise. Catch it in the effect and publish an error event, as `registerWeatherStore` does.
-- If the store is removed, or the bus is disposed, before your promise resolves, `publish` throws inside your promise. The error ends up as a rejected promise.
+- If the store is removed, or the bus is disposed, before your promise resolves, `publish` throws inside your promise, and the promise rejects with that error.
 
 ## Event subscriptions
 

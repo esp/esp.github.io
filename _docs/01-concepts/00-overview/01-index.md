@@ -72,7 +72,7 @@ Points of note:
 * Modules register themselves with the system which allows other unrelated code to interact with them. 
   For example, the shell could build a menu of views which could be opened.
 * When a view is to be created, it's `ViewFactory` (from [esp-js-ui](../05-esp-js-ui/01-index.md)) is invoked. 
-  It decides how to build the view ([OO](../01-esp-js/04-oo-modeling.md), or [immutable](../02-esp-js-polimer/01-index.md), or custom if you write an adapter for the router).
+  It decides how to build the view.
   Each view gets a [container](../04-esp-js-di/01-index.md), it's container is a child of the modules (it can see objects scoped to the module or the application).
   Multiple view instances can be created, these operate independently of each other. 
 * Views can add or remove themselves from one or more regions. 
