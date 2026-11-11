@@ -69,5 +69,3 @@ concepts:
         url: /concepts/esp-js-ui/views/
       - title: "Regions"
         url: /concepts/esp-js-ui/regions/
-      - title: "State Persistence"
-        url: /concepts/esp-js-ui/state-persistence/
