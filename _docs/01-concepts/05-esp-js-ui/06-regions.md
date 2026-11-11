@@ -42,8 +42,3 @@ When more than one view is bound to a region, `RegionView` shows them in this or
 
 1. By module, in the order the app adds the modules with `withModule`.
 2. Within a module, in the order of its `withView` calls.
-
-## Bindings are fixed
-
-A module's bindings are fixed when its `build()` runs. Calling `withView` after `build()` throws.
-You can't add a view to a region, or remove one, while the app runs.

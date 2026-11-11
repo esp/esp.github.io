@@ -5,6 +5,13 @@ permalink: /concepts/esp-js-react/rendering-a-view/
 
 `ConnectableComponent` renders a view with the model of one store, and the hooks on this page read the model and publish events from inside the view.
 
+{% capture info_1 %}
+`ConnectableComponent` is the lower-level way to show a view.
+In an esp-js-ui app, you bind a view to a store with `withView`, and `RegionView` renders a `ConnectableComponent` for it.
+See [views](../05-esp-js-ui/05-views.md).
+{% endcapture %}
+{% include callout-info.html content=info_1 title="If you use esp-js-ui" %}
+
 ## `ConnectableComponent`
 
 `ConnectableComponent` subscribes to a store's model and renders your view each time the model changes.

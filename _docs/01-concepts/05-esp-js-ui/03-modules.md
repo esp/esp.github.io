@@ -69,8 +69,3 @@ See [lazy modules](./02-bootstrapping.md#lazy-modules).
 For example, the example app's weather module waits for the browser's location in its `withInitialisation` hook.
 To fetch data without delaying `start()`, publish an event and fetch in an effect, as the sample above does with `FetchWeather`.
 
-## Unloading a module
-
-You can't unload one module, and a module has no dispose hook.
-A module's stores stay on the bus, and its container stays, until `app.dispose()` disposes the whole app.
-See [dispose the app](./02-bootstrapping.md#dispose-the-app).

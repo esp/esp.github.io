@@ -50,9 +50,6 @@ If your models are classes, install `immer` yourself to import `immerable`:
 npm install immer
 ```
 
-{% capture warning_1 %}Don't put a `Map` or `Set` in a model. The copy of immer inside esp-js can't draft them, and calling `enableMapSet()` from your own `immer` doesn't change that. See [maps and sets](../01-concepts/01-esp-js/03-store-builder.md#maps-and-sets).{% endcapture %}
-{% include callout-warning.html content=warning_1 title="No maps or sets in a model" %}
-
 ## Load with a script tag
 
 You can load esp-js and esp-js-di without a bundler.

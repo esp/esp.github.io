@@ -106,7 +106,6 @@ For the whole API, see [event bus](../01-esp-js/02-event-bus.md).
 
 - Publishing an event to a store with no handler for it logs a warning. See [publish an event](../01-esp-js/02-event-bus.md#publish-an-event).
 - Models are frozen. Change them only in event handlers, through the draft.
-- `esp-js` bundles its own copy of immer, so a Map or Set in a model doesn't work. See [maps and sets](../01-esp-js/03-store-builder.md#maps-and-sets).
 - Effects run after the event handlers, each with a snapshot of the model taken right after its own event. See [state change workflow](../01-esp-js/05-state-change-workflow.md#effects).
 
 ## Before and after

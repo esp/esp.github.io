@@ -38,13 +38,4 @@ An `esp-js-ui` app has a root container, one or more modules, and a shell that s
 - The shell is a React component. Its `RegionView` components show the views bound to each region. See [regions](../05-esp-js-ui/06-regions.md).
 - `AppBuilder` builds the app, and `start()` runs the modules' hooks in a fixed order. See [bootstrapping](../05-esp-js-ui/02-bootstrapping.md).
 
-## What ESP doesn't do
-
-ESP v9 doesn't have these:
-
-- **View factories.** There is no `ViewFactory`. A module binds a component to a store with `withView`.
-- **Many instances of one view.** Each `withView` call shows one view for one store.
-- **Adding views while the app runs.** A module's bindings are fixed when it's built. You can't add a view to a region, or remove one, later.
-- **State persistence.** ESP doesn't save or restore models or region layouts.
-
 If you're moving an app from ESP v8, see [migrating from v8](./02-migrating-from-v8.md).

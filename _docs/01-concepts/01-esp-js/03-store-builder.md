@@ -135,14 +135,9 @@ export const registerTodoStore = (bus: EventBus, storeId: string): void => {
 
 ## Maps and sets
 
-esp-js has its own copy of immer, built without immer's `Map` and `Set` support.
-If an event handler reads a `Map` or `Set` from the draft, immer throws `The plugin for 'MapSet' has not been loaded into Immer`, and the error halts the bus.
-Calling `enableMapSet()` from your own `immer` package doesn't change this, because it changes a different copy of immer.
-
-{% capture warning_1 %}
-Use plain objects and arrays in a model, not `Map` or `Set`.
-{% endcapture %}
-{% include callout-warning.html content=warning_1 title="No maps or sets in a model" %}
+A model can hold a `Map` or a `Set`.
+esp-js turns on immer's `Map` and `Set` support, so an event handler changes them on the draft like any other value.
+You don't call `enableMapSet()` yourself.
 
 ## Test a store in Node
 
