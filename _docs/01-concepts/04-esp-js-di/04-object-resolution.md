@@ -16,7 +16,7 @@ The container has three methods to resolve objects:
 - If the registered item is a class or a constructor function, the container calls it with `new` and passes the dependencies to the constructor.
 - Otherwise the container uses the item as a prototype: it creates the object with `Object.create(item)`. If the object has an `init()` method, the container calls it with the dependencies. If `init()` returns a value, `resolve` returns that value instead of the object.
 
-## Example
+## Resolve an object with a dependency
 
 `Parent` takes a `Child` as its dependency.
 `Child` is registered as `child`, and `Parent` as `parent`.

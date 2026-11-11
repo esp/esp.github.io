@@ -9,7 +9,7 @@ Many containers use [decorators](https://github.com/wycats/javascript-decorators
 They help in some cases, but they cause these problems:
 
 - An object and its dependencies are declared together, so the object depends on them.
-- It's hard to configure an object for two different uses, unless you decorate it for both, if the container supports that.
+- It's hard to configure one object for two different uses. You have to decorate it for both, and not every container supports that.
 - It's hard to see how objects work together at runtime. The configuration is spread over the objects, across the whole codebase. Configuration in one place is easier to understand.
 - Most apps need some runtime configuration anyway. You end up with both runtime and decorator configuration, which is confusing.
 - It doesn't work for shared code, such as libraries. You don't want some code configured with decorators and the rest at runtime.
