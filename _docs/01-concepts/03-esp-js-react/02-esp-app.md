@@ -3,7 +3,7 @@ title: EspApp
 permalink: /concepts/esp-js-react/esp-app/
 ---
 
-`EspApp` connects an esp-js-ui app to React, and `EspEventBusContextProvider` gives any component the bus.
+`EspApp` connects an esp-js-ui app to React, and `EspEventBusContextProvider` gives the bus to the components below it.
 
 ## Render an app with `EspApp`
 
@@ -14,7 +14,7 @@ Render `EspApp` after `await app.start()`.
 `EspApp` reads `app.modules` when it renders, and `app.modules` is empty until `start()` loads the modules.
 Nothing renders `EspApp` again when `start()` finishes, so if you render it first, its regions stay empty.
 
-This is the entry point of the [example app](https://github.com/esp/esp-js/tree/master/examples/example-app):
+This is a shorter version of the entry point of the [example app](https://github.com/esp/esp-js/tree/master/examples/example-app):
 
 ```tsx
 import { createRoot } from 'react-dom/client';

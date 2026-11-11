@@ -84,7 +84,7 @@ A view bound with `withView` doesn't need the cast.
 `ConnectableComponent` renders one around each view, so these hooks work anywhere inside a view:
 
 - `useGetStoreId()` returns the storeId.
-- `useGetStoreModel()` returns the `model` prop of the provider. It doesn't subscribe to the store. Inside a `ConnectableComponent`, the `model` prop is the store's current model.
+- `useGetStoreModel()` returns the `model` prop of the provider. It doesn't subscribe to the store. Inside a `ConnectableComponent`, it returns the same `model` the view gets.
 - `usePublishStoreEvent()` returns a function that publishes to the store. Call it with `(eventType, event)` or with one object `{ eventType, event }`.
 - `usePublishStoreEventWithEntityKey()` returns a function that publishes to the store with an entity key. Call it with `(entityKey, eventType, event)` or with one object `{ entityKey, eventType, event }`.
 

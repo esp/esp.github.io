@@ -10,8 +10,9 @@ permalink: /concepts/esp-js-react/region-view/
 `RegionView` takes one prop, `regionName`.
 It needs an [`EspApp`](./02-esp-app.md) above it, which gives it the app's modules.
 
-This is the shell of the [example app](https://github.com/esp/esp-js/tree/master/examples/example-app), with a `main` region and a `weather` region:
+This is a shorter version of the shell of the [example app](https://github.com/esp/esp-js/tree/master/examples/example-app), with a `main` region and a `weather` region:
 
+{% raw %}
 ```tsx
 import { RegionView } from 'esp-js-react';
 
@@ -26,6 +27,7 @@ export const AppShell = () => (
     </div>
 );
 ```
+{% endraw %}
 
 A module binds a view to a region with `withView(storeId, Component, region)`. See [views](../05-esp-js-ui/05-views.md).
 

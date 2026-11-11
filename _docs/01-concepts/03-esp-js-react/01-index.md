@@ -53,7 +53,7 @@ createRoot(document.getElementById('root')!).render(
 );
 ```
 
-1. The `counter` store is registered before React renders, so `ConnectableComponent` finds it.
+1. The sample registers the `counter` store before React renders, so `ConnectableComponent` finds it.
 2. `ConnectableComponent` passes the store's model to `CounterView` as the `model` prop.
 3. A click publishes `Increment` to the `counter` store. The view renders again with the new count.
 
