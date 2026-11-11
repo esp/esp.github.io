@@ -5,26 +5,37 @@ permalink: /examples/
 
 # Examples
 
-The examples can be found in the [examples](https://github.com/esp/esp-js/tree/master/examples/) directory.
+The esp-js repo has one example app, [example-app](https://github.com/esp/esp-js/tree/master/examples/example-app), which uses all four ESP packages.
 
-## ESP-JS API Examples
+## What the example app shows
 
-Several example bundled into a single script to demo various aspects of the API.
+The app has two modules, each with one store and one view.
 
-Checkout the [readme](https://github.com/esp/esp-js/tree/master/examples/esp-js-api) with the example for more info.
+The `todo` module is a to-do list in the `main` region:
+- a store built with `StoreBuilder`, with a class model that uses `immerable`;
+- event handlers that call methods on the draft, or change it directly;
+- a view that publishes events with `usePublishStoreEvent`.
 
-## ESP-JS-DI API Examples
+The `weather` module shows the current weather in the `weather` region:
+- a `WeatherService` registered as a singleton in the module's esp-js-di container;
+- an async `withInitialisation` that finds your location, then publishes the first events;
+- a preview handler that cancels a fetch while one is already running;
+- an effect that calls the weather API and publishes the result as a new event;
+- an event subscription that refreshes the weather every 60 seconds.
 
-Checkout the [readme](https://github.com/esp/esp-js/tree/master/examples/esp-js-di-api) with the example for more info.
+The weather module asks the browser for your location and looks up its name with OpenStreetMap. It gets the weather from the [Open-Meteo](https://open-meteo.com/) API.
+If you don't share your location, it shows the weather for Perth, Western Australia.
 
-## ESP Agile board
+## Run the example app
 
-This [example](https://github.com/esp/esp-js/tree/master/examples/esp-js-react-agile-board) demonstrates a simple agile planning board.
-It uses both [esp-js](https://www.npmjs.com/package/esp-js) and [esp-js-react](https://www.npmjs.com/package/esp-js-react) to build a unidirectional, model first application.
+Clone the [esp-js repo](https://github.com/esp/esp-js), then run these commands from its root folder:
 
-![ESP Agile board Example](../../images/esp-agile-demo.gif)
+```
+npm run bootstrap
+npm run build-dev
+cd examples/example-app
+npm run dev
+```
 
-## Composite (multi module) Trading Application
-
-This [example](https://github.com/esp/esp-js/tree/master/examples/esp-js-ui-module-based-app) demonstrates a basic multi module trading application architecture.
-It uses all of the ESP package to show how a modular system can be built. 
+`npm run build-dev` builds the four packages, which the app loads from the repo.
+`npm run dev` starts the Vite dev server and prints the URL to open.
