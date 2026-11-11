@@ -60,7 +60,7 @@ It can't resolve another module's services, and other modules can't resolve its 
 
 ## Lazy modules
 
-The app can load a module when it starts, from a function that returns a promise of the module.
+The app can load a module during `start()`, from a function that returns a promise of the module.
 See [lazy modules](./02-bootstrapping.md#lazy-modules).
 
 ## Slow hooks

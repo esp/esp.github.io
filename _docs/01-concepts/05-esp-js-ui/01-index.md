@@ -3,7 +3,7 @@ title: esp-js-ui
 permalink: /concepts/esp-js-ui/
 ---
 
-esp-js-ui builds an app out of modules, and starts them in a fixed order.
+The `esp-js-ui` package builds an app out of modules, and starts them in a fixed order.
 
 ## An app with one module
 

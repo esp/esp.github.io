@@ -13,7 +13,7 @@ A module binds a React component to a store with `withView`, and the app shows t
 - `Component`: the React component that renders the model.
 - `region`: the name of the region to show the view in. See [regions](./06-regions.md).
 
-Build the store under the same storeId in the module's `withInitialisation` hook.
+Build the store under the same `storeId` in the module's `withInitialisation` hook.
 This is the todo module from the [example app](https://github.com/esp/esp-js/tree/master/examples/example-app):
 
 ```ts
@@ -31,7 +31,7 @@ export const todoModule = ModuleBuilder
 ```
 
 `withInitialisation` runs during `start()`, so the store exists before the app renders.
-If no store is registered under the storeId when the view mounts, the view renders nothing: see [register the store before the view mounts](../03-esp-js-react/04-rendering-a-view.md#register-the-store-before-the-view-mounts).
+If no store is registered under the `storeId` when the view mounts, the view renders nothing: see [register the store before the view mounts](../03-esp-js-react/04-rendering-a-view.md#register-the-store-before-the-view-mounts).
 
 ## What the view gets
 
@@ -41,4 +41,4 @@ For every prop the view gets, and the hooks it can use, see [rendering a view](.
 ## One binding, one view
 
 Each `withView` call shows one view, connected to one store.
-To show the same component for two stores, call `withView` twice, with a different storeId each time.
+To show the same component for two stores, call `withView` twice, with a different `storeId` each time.

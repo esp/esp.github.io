@@ -3,7 +3,7 @@ title: Services
 permalink: /concepts/esp-js-ui/services/
 ---
 
-An esp-js-ui app registers its services in [esp-js-di](../04-esp-js-di/01-index.md) containers: one root container for the app, and one child container for each module.
+An `esp-js-ui` app registers its services in [`esp-js-di`](../04-esp-js-di/01-index.md) containers: one root container for the app, and one child container for each module.
 
 ## The app container
 

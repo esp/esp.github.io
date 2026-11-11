@@ -70,7 +70,7 @@ const app = AppBuilder
 await app.start();
 ```
 
-Output, without the lines esp-js-ui writes through the esp-js [logger](../01-esp-js/07-logging.md):
+Output, without the lines `esp-js-ui` writes through the `esp-js` [logger](../01-esp-js/07-logging.md):
 
 ```
 app: container configuration
