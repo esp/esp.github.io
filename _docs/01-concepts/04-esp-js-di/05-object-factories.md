@@ -1,35 +1,36 @@
 ---
-title: Object Factories
+title: Object factories
 permalink: /concepts/esp-js-di/object-factories/
 ---
 
-Sometimes you want your object to receive a factory, that when called will `resolve` and return the dependency in question.
+An object can take a factory: a function that resolves a dependency each time you call it.
 
-{% capture info_1 %}
-This feature uses the built in factory [Dependency Resolver](./08-dependency-resolvers.md). 
-{% endcapture %}
-{% include callout-info.html content=info_1 %}
+To inject a factory, pass `{ resolver: 'factory', key: identifier }` to `inject()`.
+This uses the built-in `factory` [dependency resolver](./08-dependency-resolvers.md).
 
-```javascript
+```ts
+import { Container } from 'esp-js-di';
+
 class Item {
     constructor() {
-        console.log("creating an item");
+        console.log('creating an item');
     }
 }
-class Manager{
-    constructor(itemFactory) {
-        this._itemFactory = itemFactory;
-    }
-    createItem(name) {
-        return this._itemFactory(name);
+
+class Manager {
+    constructor(private itemFactory: () => Item) {}
+    createItem() {
+        return this.itemFactory();
     }
 }
-let container = new Container();
+
+const container = new Container();
 container.register('item', Item).transient();
-container.register('manager', Manager).inject({ resolver: 'factory', key: 'item'});
-let manager = container.resolve('manager');
-let item1 = manager.createItem();
-let item2 = manager.createItem();
+container.register('manager', Manager).inject({ resolver: 'factory', key: 'item' });
+
+const manager = container.resolve<Manager>('manager');
+manager.createItem();
+manager.createItem();
 ```
 
 Output:
@@ -37,48 +38,56 @@ Output:
 ```
 creating an item
 creating an item
-
 ```
+
+The factory calls `container.resolve('item')`, so the lifetime of `item` still applies.
+`item` is registered as `transient()`, so each call builds a new `Item`.
+Without `transient()`, `item` is a singleton: the first call builds it, and the second call returns the same instance.
 
 {% capture info_1 %}
-Injected factories are different from factories you use to create objects (via `container.registerFactory`). 
-A factory registered via `registerFactory` is simply used to create your instance. 
-An injected factory lets the container create the instance but it wraps this creation in a factory and injects the factory. 
-It's typically used for lazy resolution of objects or when an object needs to create many other objects but doesn't want to take a dependency on the container itself. 
+`registerFactory` registers the function that creates the object.
+An injected factory lets the container create the object, and injects a function that resolves it.
+Use it to resolve an object later, or to create many objects without taking a dependency on the container.
 {% endcapture %}
-{% include callout-info.html content=info_1 %}
+{% include callout-info.html content=info_1 title="Injected factories and registered factories" %}
 
-## Additional Dependencies in Factories
-You can pass arguments to the factory and they forwarded as discussed under the [`resolve(..)`](./04-object-resolution.md#resolution-with-additional-dependencies) section.
+## Additional dependencies in factories
 
-Lets modify the sample from above to demonstrate this:
+The factory passes its arguments to `resolve` as [additional dependencies](./04-object-resolution.md#additional-dependencies).
+Here `Item` takes an injected dependency, then a name passed to the factory:
 
-```javascript
+```ts
+import { Container } from 'esp-js-di';
+
 class Item {
-    constructor(otherDependencyA, name) {
-        console.log('Hello ' + name + '. Other dependency: ' + otherDependencyA);
+    constructor(otherDependencyA: string, name: string) {
+        console.log(`Hello ${name}. Other dependency: ${otherDependencyA}`);
     }
 }
-class Manager{
-    constructor(itemFactory) {
-        this._itemFactory = itemFactory;
-    }
-    createItem(name) {
-        return this._itemFactory(name);
+
+class Manager {
+    constructor(private itemFactory: (name: string) => Item) {}
+    createItem(name: string) {
+        return this.itemFactory(name);
     }
 }
-let container = new Container();
+
+const container = new Container();
 container.registerInstance('otherDependencyA', 'look! a string dependency');
 container.register('item', Item).inject('otherDependencyA').transient();
-container.register('manager', Manager).inject({ resolver: 'factory', key: 'item'});
-let manager = container.resolve('manager');
-let fooItem = manager.createItem('Foo');
-let barItem = manager.createItem('Bar');
+container.register('manager', Manager).inject({ resolver: 'factory', key: 'item' });
+
+const manager = container.resolve<Manager>('manager');
+manager.createItem('Foo');
+manager.createItem('Bar');
 ```
 
 Output:
 
 ```
-Hello Bob
-Hello Mick
+Hello Foo. Other dependency: look! a string dependency
+Hello Bar. Other dependency: look! a string dependency
 ```
+
+Here `transient()` is required.
+Without it, the second call passes an additional dependency to the singleton that already exists, and `resolve` throws.

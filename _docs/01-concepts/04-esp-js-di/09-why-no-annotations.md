@@ -1,24 +1,20 @@
 ---
-title: Why No Annotation?
+title: Why no annotations?
 permalink: /concepts/esp-js-di/why-no-annotations/
 ---
 
-Often container implementation use [decorators](https://github.com/wycats/javascript-decorators/blob/caf8f28b665333dc39293d5319fe01f01e3e3c0f/README.md) (annotations in Java and attributes in C#) to decorate objects with IoC related concerns. 
-For example lifetime management, scoping, dependency information etc.
-They are useful in some instances however often an anti-pattern for the following reasons:
-* Objects become dependent on their dependencies as they are explicitly declared together.
-* It becomes difficult to configure an object for differing usages unless you decorate it for both, if supported.
-* It becomes difficult to gain an understanding of how objects play together at runtime.
-  Runtime configuration is scattered on objects in different code files and across the entire codebase.
-  Runtime configuration of objects is simpler to understand when it's in a single place.
-* 90% of the time you'll find you need some runtime configuration. 
-  You end up in a place where you have both runtime and declarative (i.e. decorator) configuration.
-  This adds confusion.
-* It doesn't work when creating shared code, i.e. in libraries. 
-  If you hit this you don't want some code using annotation and some using run time configuration (i.e. the above point).
+`esp-js-di` has no decorators: you configure every registration in code, with `register()` and `inject()`.
+
+Many containers use [decorators](https://github.com/wycats/javascript-decorators/blob/caf8f28b665333dc39293d5319fe01f01e3e3c0f/README.md) (annotations in Java, attributes in C#) to put container settings, such as lifetime and dependencies, on the objects.
+They help in some cases, but they cause these problems:
+
+- An object and its dependencies are declared together, so the object depends on them.
+- It's hard to configure one object for two different uses. You have to decorate it for both, and not every container supports that.
+- It's hard to see how objects work together at runtime. The configuration is spread over the objects, across the whole codebase. Configuration in one place is easier to understand.
+- Most apps need some runtime configuration anyway. You end up with both runtime and decorator configuration, which is confusing.
+- It doesn't work for shared code, such as libraries. You don't want some code configured with decorators and the rest at runtime.
 
 {% capture info_1 %}
-That said, they can be usually added as a bolt on.
-The features hasn't got to the top of the list.
+Decorators could be added on top of the container, but `esp-js-di` doesn't have them.
 {% endcapture %}
 {% include callout-info.html content=info_1 %}

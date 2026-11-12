@@ -7,61 +7,55 @@ main:
     url: /examples/
   - title: "Source"
     url: /source/
-  - title: "Road Map"
-    url: /roadmap/
 
 concepts:
-  - title: overview
+  - title: "Overview"
     url: /concepts/overview/
+    children:
+      - title: "Migrating from v8"
+        url: /concepts/overview/migrating-from-v8/
   - title: esp-js
     url: /concepts/esp-js/
     children:
-      - title: "Event Router"
-        url: /concepts/esp-js/event-router/
-      - title: "State Change Workflow"
+      - title: "Event bus"
+        url: /concepts/esp-js/event-bus/
+      - title: "Store builder"
+        url: /concepts/esp-js/store-builder/
+      - title: "Effects"
+        url: /concepts/esp-js/effects/
+      - title: "State change workflow"
         url: /concepts/esp-js/state-change-workflow/
-      - title: "OO Modeling"
-        url: /concepts/esp-js/oo-modeling/
-      - title: "Talking to Other Models"
+      - title: "Talking to other stores"
         url: /concepts/esp-js/talking-to-other-models/
-  - title: esp-js-polimer
-    url: /concepts/esp-js-polimer/
-    children:
-      - title: "Model (Store)"
-        url: /concepts/esp-js-polimer/model-store/
-      - title: "Model Builder"
-        url: /concepts/esp-js-polimer/model-builder/
-      - title: "State Handlers"
-        url: /concepts/esp-js-polimer/state-handlers/
-      - title: "Event Streams"
-        url: /concepts/esp-js-polimer/event-streams/
+      - title: "Logging"
+        url: /concepts/esp-js/logging/
   - title: esp-js-react
     url: /concepts/esp-js-react/
     children:
-      - title: "Router Provider"
-        url: /concepts/esp-js-react/router-provider/
-      - title: "Dynamic View Binding"
-        url: /concepts/esp-js-react/dynamic-view-binding/
-      - title: "Rendering a View"
+      - title: "EspApp"
+        url: /concepts/esp-js-react/esp-app/
+      - title: "RegionView"
+        url: /concepts/esp-js-react/region-view/
+      - title: "Rendering a view"
         url: /concepts/esp-js-react/rendering-a-view/
   - title: esp-js-di
     url: /concepts/esp-js-di/
     children:
-      - title: "Creating a Container"
+      - title: "Creating a container"
         url: /concepts/esp-js-di/creating-a-container/
-      - title: "Object Registration"
+      - title: "Object registration"
         url: /concepts/esp-js-di/object-registration/
-      - title: "Object Resolution"
+      - title: "Object resolution"
         url: /concepts/esp-js-di/object-resolution/
-      - title: "Object Factories"
+      - title: "Object factories"
         url: /concepts/esp-js-di/object-factories/
-      - title: "Lifetime Management"
+      - title: "Lifetime management"
         url: /concepts/esp-js-di/lifetime-management/
-      - title: "Child Containers"
+      - title: "Child containers"
         url: /concepts/esp-js-di/child-containers/
-      - title: "Dependency Resolvers"
+      - title: "Dependency resolvers"
         url: /concepts/esp-js-di/dependency-resolvers/
-      - title: "Why no Annotations?"
+      - title: "Why no annotations?"
         url: /concepts/esp-js-di/why-no-annotations/
   - title: "esp-js-ui"
     url: /concepts/esp-js-ui/
@@ -76,7 +70,3 @@ concepts:
         url: /concepts/esp-js-ui/views/
       - title: "Regions"
         url: /concepts/esp-js-ui/regions/
-      - title: "State Persistence"
-        url: /concepts/esp-js-ui/state-persistence/
-      - title: "Logging"
-        url: /concepts/esp-js-ui/logging/

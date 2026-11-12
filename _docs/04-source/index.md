@@ -5,14 +5,14 @@ permalink: /source/
 
 # Source
 
-You can find all the esp packages on github: [github.com/esp/esp-js](https://github.com/esp/esp-js).
+All the ESP packages are in one repo on GitHub: [github.com/esp/esp-js](https://github.com/esp/esp-js).
 
-All package have TypeScript declaration files. 
+Every package includes TypeScript typings.
 
-## Licence
+## License
 
-The project is licensed under the Apache 2 license.
+ESP uses the Apache 2.0 license.
 
 ## Issues
 
-[github.com/esp/esp-js/issues](https://github.com/esp/esp-js/issues)
+Report bugs in the [esp-js issues](https://github.com/esp/esp-js/issues).

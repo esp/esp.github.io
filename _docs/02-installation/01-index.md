@@ -5,23 +5,64 @@ permalink: /installation/
 
 # Installation
 
-Install using npm or yarn, for example: `yarn add esp-js`.
+This page shows how to install the ESP packages and load them in your app.
 
-If you're using ES6 with a package manager such as [webpack](https://webpack.github.io) you can import `esp` like this:
+## Install the packages
 
-```javascript
-import * as esp from 'esp-js';
-var router = new esp.Router();
+Install the packages you need from npm:
 
-// or
-
-import { Router } from 'esp-js';
-var router = new Router();
+```
+npm install esp-js
+npm install esp-js-di
+npm install esp-js-ui
+npm install esp-js-react
 ```
 
-Alternatively you can reference `dist\esp.js` or `dist\esp.min.js` via a `script` tag. These files expose `esp` using the Universal Module Definition (UMD) format. 
+All four packages share one version number. Some packages need other packages installed too:
 
-## TypeScript Typings
+| Package | Also install |
+|---|---|
+| `esp-js` | nothing |
+| `esp-js-di` | nothing |
+| `esp-js-ui` | `esp-js`, `esp-js-di`, and React 19 if you use views |
+| `esp-js-react` | `esp-js`, `esp-js-ui`, and React 19 |
 
-All packages have a corresponding `.d.ts` file which is correctly referenced via the `typings` property in each repos package.json.
-This allows the TypeScript compiler to find it.
+## Import a package
+
+Each package works with ESM `import` and CommonJS `require`:
+
+```typescript
+import { EventBus } from 'esp-js';
+```
+
+```javascript
+const { EventBus } = require('esp-js');
+```
+
+Each package ships its own TypeScript typings, so you don't need an `@types` package.
+
+## immer and class models
+
+esp-js includes its own copy of [immer](https://immerjs.github.io/immer/), so you don't install it to use esp-js.
+If your models are classes, install `immer` yourself to import `immerable`:
+
+```
+npm install immer
+```
+
+## Load with a script tag
+
+You can load esp-js and esp-js-di without a bundler.
+Use `.dist/esp-js.js` and `.dist/esp-js-di.js` from the npm packages for development, or the `.min.js` files next to them for production.
+esp-js sets the global `espJs`, and esp-js-di sets `espJsDi`.
+
+```html
+<script src="esp-js.min.js"></script>
+<script src="esp-js-di.min.js"></script>
+<script>
+    const bus = new espJs.EventBus();
+    const container = new espJsDi.Container();
+</script>
+```
+
+Use a bundler for esp-js-ui and esp-js-react. They work with React components, and React 19 has no script-tag build.

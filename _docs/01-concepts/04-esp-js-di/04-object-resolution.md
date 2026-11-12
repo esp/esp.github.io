@@ -1,90 +1,77 @@
 ---
-title: Object Resolution
+title: Object resolution
 permalink: /concepts/esp-js-di/object-resolution/
 ---
 
-Object resolution is done via :
+You resolve an object by its identifier, and the container builds it and its dependencies.
 
-* `container.resolve(identifier [, additionalDependency1, additionalDependency2, etc. ]);`
-  This builds the object registered with the given `identifier`. 
-  Any dependencies will also be built and injected.
-  Optionally provide additional dependencies which will get passed in after any that were specified via `inject()` at registration time.
-  
-* `container.resolveGroup(name);`
-   Resolving a group returns an array of objects registered against that group name. 
-   More below on this.
- 
-{% capture info_1 %}
-Resolution will trigger build up of the object in question. 
-Any dependencies the object requires will be resolved and injected.
+The container has three methods to resolve objects:
 
-### Function Constructors / Classes
-If the type registered is a constructor function (i.e. typeof registeredObject === 'function') or class it will be initialised accordingly and any dependencies passed in.
+- `container.resolve(identifier, ...additionalDependencies)` builds the object registered under `identifier`. It resolves each dependency listed with `inject()` and passes them in, followed by any additional dependencies.
+- `container.resolveGroup(groupName, ...additionalDependencies)` returns an array with the objects registered in the group. See [resolve groups](#resolve-groups).
+- `container.resolveMany(...specs)` resolves several identifiers into one object. See [resolve several objects](#resolve-several-objects).
 
-### Prototypical Inheritance
+## How the container builds an object
 
-If the type registered is not a constructor function it will be assumed a prototype.
-At resolve time new object/s will be created using `Object.create(registeredObject)`.
-If the object has an `init()` method then this will be called passing any dependencies registered.
-{% endcapture %}
-{% include callout-info.html content=info_1 title="How does the resolution work?" %}
+- If the registered item is a class or a constructor function, the container calls it with `new` and passes the dependencies to the constructor.
+- Otherwise the container uses the item as a prototype: it creates the object with `Object.create(item)`. If the object has an `init()` method, the container calls it with the dependencies. If `init()` returns a value, `resolve` returns that value instead of the object.
 
-## Example
+## Resolve an object with a dependency
 
-Below we have 2 simple classes. 
-`Parent` takes `Child` as it's dependency. 
-`Child` is registered with the identifier `child` and `Parent` with the identifier `parent`.
-Additionally the parent registration injects the `Child` as a dependency.
+`Parent` takes a `Child` as its dependency.
+`Child` is registered as `child`, and `Parent` as `parent`.
+The `parent` registration injects `child`:
 
-``` javascript
+```ts
+import { Container } from 'esp-js-di';
+
 class Child {
     sayHello() {
         console.log('Hello from the child');
     }
 }
+
 class Parent {
-    constructor(child) {
-        this._child = child;
-    }
+    constructor(private child: Child) {}
     sayHello() {
         console.log('Hello from the parent');
-        this._child.sayHello();
+        this.child.sayHello();
     }
 }
-let container = new Container();
+
+const container = new Container();
 container.register('child', Child);
 container.register('parent', Parent).inject('child');
-let parent = container.resolve('parent');
+
+const parent = container.resolve<Parent>('parent');
 parent.sayHello();
 ```
 
 Output:
 
 ```
-$ node readme.js
 Hello from the parent
 Hello from the child
 ```
 
-<a name="resolve-groups"></a>  
-# Resolve Groups
+## Resolve groups
 
-You can group objects together at registration time then resolve them using `resolveGroup(name)`.
-Typically this is handy when you're objects share a related abstraction.
+Add registrations to a group with `inGroup(groupName)`, then resolve them all with `resolveGroup(groupName)`.
+Use a group for objects that do the same kind of job.
 
-```javascript
-let Foo = {
-    name: "theFoo"
-};
-let Bar = {
-    name: "theBar"
-};
-let container = new Container();
-container.register('foo', Foo).inGroup('group1');
-container.register('bar', Bar).inGroup('group1');
-let group1 = container.resolveGroup('group1');
-for (let i = 0, len = group1.length; i < len; i++) {
-    console.log(group1[i].name);
+```ts
+import { Container } from 'esp-js-di';
+
+const foo = { name: 'theFoo' };
+const bar = { name: 'theBar' };
+
+const container = new Container();
+container.register('foo', foo).inGroup('group1');
+container.register('bar', bar).inGroup('group1');
+
+const group1 = container.resolveGroup<{ name: string }>('group1');
+for (const item of group1) {
+    console.log(item.name);
 }
 ```
 
@@ -95,47 +82,85 @@ theFoo
 theBar
 ```
 
-### Injecting Groups
+`resolveGroup(groupName, ...additionalDependencies)` passes the additional dependencies to each object in the group.
 
-If you want to inject a group simply register the injection using the `groupName`.
-From example, if you wanted to inject all dependencies in group `group1`, from our example above, you'd do this:
+### Inject a group
 
-```javascript
+To inject a group, pass the group name to `inject()`. The object gets an array:
+
+```ts
+import { Container } from 'esp-js-di';
+
 class Bazz {
-    constructor(group1) {
-        // group1 would be an array with dependencies 'foo' and 'bar'
-        this._group1 = group1;
-    }
-};
+    constructor(public group1: { name: string }[]) {}
+}
+
+const container = new Container();
+container.register('foo', { name: 'theFoo' }).inGroup('group1');
+container.register('bar', { name: 'theBar' }).inGroup('group1');
 container.register('bazz', Bazz).inject('group1');
-let bazz = container.resolveGroup('bazz');
+
+const bazz = container.resolve<Bazz>('bazz');
+console.log(bazz.group1.map(item => item.name)); // [ 'theFoo', 'theBar' ]
 ```
 
-<a name="resolution-with-additional-dependencies"></a>  
-## Resolution with Additional Dependencies
+If a name is both a group and an identifier, `inject()` injects the group.
 
-When calling `resolve` you can optionally pass additional dependencies.
-These will be appended to the dependencies provided to `inject` at registration time (if any).
+## Additional dependencies
 
-```javascript
+When you call `resolve`, you can pass additional dependencies.
+The container passes them after the dependencies listed with `inject()`:
+
+```ts
+import { Container } from 'esp-js-di';
+
 class Foo {
-    constructor(fizz, bar, bazz) {
-        console.log('%s %s %s', fizz.name, bar.name, bazz.name);
+    constructor(fizz: { name: string }, bar: { name: string }, bazz: { name: string }) {
+        console.log(`${fizz.name} ${bar.name} ${bazz.name}`);
     }
 }
-let container = new Container();
-container.register('fizz', { name: 'fizz'});
+
+const container = new Container();
+container.register('fizz', { name: 'fizz' });
 container.register('foo', Foo).inject('fizz');
-let foo = container.resolve('foo', { name: 'bar'}, { name: 'bazz'});
+
+container.resolve<Foo>('foo', { name: 'bar' }, { name: 'bazz' });
 ```
 
-Output
+Output:
 
 ```
 fizz bar bazz
 ```
 
+The container uses additional dependencies only when it builds a new object.
+If the container already holds the instance, for example a singleton, `resolve` with additional dependencies throws.
+To pass different dependencies on each call, register the item as `transient()`. See [lifetime management](./06-lifetime-management.md).
 
+## Resolve several objects
 
+`container.resolveMany(...specs)` resolves several objects and returns them in one object, keyed by identifier.
+Each spec is an identifier, or an object `{ name, additionalDependencies }`:
 
+```ts
+import { Container } from 'esp-js-di';
 
+class Logger {}
+class Report {
+    constructor(public logger: Logger, public title: string) {}
+}
+
+const container = new Container();
+container.register('logger', Logger);
+container.register('report', Report).inject('logger').transient();
+
+const { logger, report } = container.resolveMany<{ logger: Logger, report: Report }>(
+    'logger',
+    { name: 'report', additionalDependencies: ['Monthly'] },
+);
+console.log(report.title); // Monthly
+console.log(report.logger === logger); // true
+```
+
+`resolveMany` calls `resolve` for each spec in order.
+If one fails, it throws, and the objects it already resolved stay resolved.

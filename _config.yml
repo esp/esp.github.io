@@ -56,10 +56,6 @@ defaults:
       path: "_docs/04-source"
     values:
       layout: splash
-  - scope:
-      path: "_docs/05-roadmap"
-    values:
-      layout: splash
 
 footer:
   links:

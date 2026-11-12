@@ -1,123 +1,128 @@
 ---
-title: Dependency Resolvers
+title: Dependency resolvers
 permalink: /concepts/esp-js-di/dependency-resolvers/
 ---
 
-Dependency resolvers alter the default way a dependency is created.
-They are effectively a custom hook that will be invoked to get the dependency being built. 
+A dependency resolver changes how the container builds a dependency: the container calls the resolver to get the value to inject.
 
-When registering items in the `Container` you can reference dependency resolvers via the `inject()` function. 
-For example:
+To use a resolver, pass an object with a `resolver` property to `inject()`.
+The container calls this object the dependency key:
 
-```javascript
-class MyClass {
-    constructor(myStringValue, someOtherObject) {}
-}
+```ts
 container
     .register('myClass', MyClass)
     .inject(
-        { resolver: 'literal', value : 'the-string-to-inject' }, // a dependency key referencing a build in literal resolver
-        'my-other-object-key' // plain old string dependency key
+        { resolver: 'literal', value: 'the-string-to-inject' }, // a dependency key for the built-in literal resolver
+        'my-other-object-key', // a plain string dependency key
     );
 ```
 
-There are 4 built in resolvers and you can create your own if required.
+There are four built-in resolvers, and you can add your own.
+The `ResolverNames` export holds the built-in names: `ResolverNames.literal`, `ResolverNames.delegate`, `ResolverNames.factory`, and `ResolverNames.externalFactory`.
 
-## Built in Resolvers
+## Built-in resolvers
 
 ### Literal
 
-This is handy if you want to inject a literal value, for example a `string`, into a dependency.
+The `literal` resolver injects the `value` from the dependency key, for example a string:
 
-```javascript
+```ts
+import { Container } from 'esp-js-di';
+
 class MyClass {
-    constructor(name) {
-        this.name = name;
-    }
+    constructor(public name: string) {}
     hello() {
         console.log(`Hello ${this.name}`);
     }
 }
-let container = new Container();
+
+const container = new Container();
 container
     .register('myClass', MyClass)
-    .inject({ resolver: 'literal', value : 'world' });
-let myClassInstance = container.resolve('myClass');
-myClassInstance.hello(); // prints 'Hello world'
+    .inject({ resolver: 'literal', value: 'world' });
+
+const myClass = container.resolve<MyClass>('myClass');
+myClass.hello(); // Hello world
 ```
+
+If `value` is `null` or `undefined`, `resolve` throws.
 
 ### Delegate
 
-The `delegate` resolver defers object creation to a delegate provided by the `dependencyKey`.
+The `delegate` resolver calls the `resolve(container)` function on the dependency key, and injects what it returns:
 
-```javascript
-class Foo  {
-    constructor(bar) {
-        console.log('bar is : [%s]', bar);
+```ts
+import { Container } from 'esp-js-di';
+
+class Foo {
+    constructor(bar: string) {
+        console.log(`bar is: [${bar}]`);
     }
 }
-let container = new Container();
-container.register('foo', Foo)
-    .inject(
-    {
-        // Internally the container registers a resolver by key 'delegate'
+
+const container = new Container();
+container
+    .register('foo', Foo)
+    .inject({
         resolver: 'delegate',
-        // use this function to create the dependency 
-        resolve: (container, resolveKey) => {
-            return 'barInstance';
-        }
+        resolve: (container: Container) => 'barInstance',
     });
-let foo = container.resolve('foo');
+
+container.resolve<Foo>('foo');
 ```
 
 Output:
 
 ```
-bar is : [barInstance]
+bar is: [barInstance]
 ```
 
-### Injection Factory
+### Factory
 
-The factories discussed under [Object Factories](./05-object-factories.md) are implemented using the built in `factory` dependency resolver.
+The `factory` resolver injects a function that resolves an object. See [object factories](./05-object-factories.md).
 
-### External Factory
+### External factory
 
-Under the covers `registerFactory` uses a built in `externalFactory` dependency resolver to invoke the factory registered against an identifier.
+`registerFactory` uses the `externalFactory` resolver to call the factory you registered. See [object registration](./03-object-registration.md#register-a-factory).
 
-## Custom Resolvers
+## Custom resolvers
 
-A dependency resolver is simply an object with a `resolve(container, dependencyKey)` method.
-The `container` argument will be the current container (i.e. the container or child container which `resolve()` was called on), and the `dependencyKey` argument is the object passed to the `inject(dependencyKey)` function.
-You can create your own resolvers and add them to the container.
+A resolver is an object with a `resolve(container, dependencyKey)` method:
 
-### Example 1
+- `container` is the container that `resolve()` was called on, which can be a child container.
+- `dependencyKey` is the object passed to `inject()`.
 
-Here is an example where an object injected into a dependency is resolved using a custom resolver.
+Add a resolver to a container with `addResolver(name, resolver)`, then name it in the dependency key's `resolver` property.
 
-```javascript
+### Inject with a custom resolver
+
+Here a custom resolver builds the `view` dependency of `Controller`:
+
+```ts
+import { Container } from 'esp-js-di';
+
 class DomResolver {
-    resolve(container, dependencyKey) {
-        // return a pretend dom element,
+    resolve(container: Container, dependencyKey: { domId: string }) {
+        // return a pretend DOM element
         return {
-            get description() {
-                return 'Fake DOM element - ' + dependencyKey.domId ;
-            }
+            description: `Fake DOM element - ${dependencyKey.domId}`,
         };
     }
 }
-let container = new Container();
-container.addResolver('domResolver', new DomResolver());
+
 class Controller {
-    constructor(view) {
+    constructor(view: { description: string }) {
         console.log(view.description);
     }
 }
+
+const container = new Container();
+container.addResolver('domResolver', new DomResolver());
 container
     .register('controller', Controller)
-    .inject(
-        { resolver: 'domResolver', domId : 'viewId' } // this object is the 'dependencyKey'
-    );
-let controller = container.resolve('controller');
+    .inject({ resolver: 'domResolver', domId: 'viewId' }); // this object is the dependency key
+
+container.resolve<Controller>('controller');
 ```
 
 Output:
@@ -126,30 +131,29 @@ Output:
 Fake DOM element - viewId
 ```
 
-### Example 2
+### Register with a custom resolver
 
-This is a much more edge case example whereby you don't know the type of the object you're registering.
-Rather than registering a `class` or `object` to build, we pass a `dependencyKey` to the `register()` API.
-In this example, we emulate the fetching of a DOM node when resolving the dependency `view`. 
+You can also pass a dependency key to `register()`, so the resolver builds the registered object itself.
+Add `isResolverKey: true` to the key.
+Without it, the container treats the key as a prototype, like any other registered object.
 
-```javascript
+```ts
+import { Container } from 'esp-js-di';
+
 class DomResolver {
-    resolve(container, dependencyKey) {
-        // return a pretend dom element,
+    resolve(container: Container, dependencyKey: { domId: string }) {
+        // return a pretend DOM element
         return {
-            get description() {
-                return 'Fake DOM element - ' + dependencyKey.domId ;
-            }
+            description: `Fake DOM element - ${dependencyKey.domId}`,
         };
     }
 }
-let container = new Container();
+
+const container = new Container();
 container.addResolver('domResolver', new DomResolver());
-// When using a resolve key to create the registered item we need to add a 'isdependencyKey' property. 
-// This lets the container know the object you're passing to `register` isn't what should be returned when something calls resolve, 
-// rather it'll use this object to create the object in question and return that to the caller. 
-container.register('view', { resolver: 'domResolver', domId : 'theDomId', isdependencyKey: true });
-let view = container.resolve('view');
+container.register('view', { resolver: 'domResolver', domId: 'theDomId', isResolverKey: true });
+
+const view = container.resolve<{ description: string }>('view');
 console.log(view.description);
 ```
 
@@ -158,6 +162,3 @@ Output:
 ```
 Fake DOM element - theDomId
 ```
-
-
-

@@ -1,14 +1,26 @@
 ---
-title: Creating a Container
+title: Creating a container
 permalink: /concepts/esp-js-di/creating-a-container/
 ---
 
-You can import and create a container like this:
+Import `Container` and create one with `new`:
 
-```javascript
-import {Container} from 'esp-js-di';
+```ts
+import { Container } from 'esp-js-di';
+
 const container = new Container();
 ```
 
-Typically you'll have 1 base container in your application.
-There internal shared state so that's not a hard or fast rule.
+An app usually has one root container.
+To scope a set of objects, create a [child container](./07-child-containers.md) from it.
+
+## The default export
+
+You can also import the default export.
+It holds `Container`, `RegistrationModifier`, `ResolverContext`, `EspDiConsts`, and `ResolverNames`:
+
+```typescript
+import espDi from 'esp-js-di';
+
+const container = new espDi.Container();
+```

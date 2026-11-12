@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="560" viewBox="0 0 760 560" font-family="sans-serif" font-size="14">
+  <title>An esp-js-ui app: a root container holds the bus and app services; each module has a child container, stores on the bus, and withView bindings that RegionViews in the shell show</title>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/>
+    </marker>
+  </defs>
+  <rect width="760" height="560" fill="#fff"/>
+
+  <g fill="none" stroke="#555" stroke-width="1.5">
+    <rect x="10" y="10" width="740" height="540" rx="6"/>
+    <rect x="40" y="180" width="320" height="210" rx="4"/>
+    <rect x="400" y="180" width="320" height="210" rx="4"/>
+    <rect x="40" y="430" width="680" height="100" rx="4"/>
+  </g>
+
+  <g fill="#fff" stroke="#555" stroke-width="1.5">
+    <rect x="200" y="45" width="360" height="80" rx="4"/>
+    <rect x="60" y="220" width="280" height="40" rx="4"/>
+    <rect x="60" y="275" width="280" height="40" rx="4"/>
+    <rect x="60" y="330" width="280" height="40" rx="4"/>
+    <rect x="420" y="220" width="280" height="40" rx="4"/>
+    <rect x="420" y="275" width="280" height="40" rx="4"/>
+    <rect x="420" y="330" width="280" height="40" rx="4"/>
+    <rect x="60" y="465" width="280" height="45" rx="4"/>
+    <rect x="420" y="465" width="280" height="45" rx="4"/>
+  </g>
+
+  <g fill="#333">
+    <text x="24" y="32">App</text>
+    <text x="56" y="205">todo module</text>
+    <text x="416" y="205">weather module</text>
+  </g>
+
+  <g fill="#333" text-anchor="middle">
+    <text x="380" y="72">Root container</text>
+    <text x="380" y="102">'bus' (the EventBus) and app services</text>
+    <text x="200" y="245">Child container</text>
+    <text x="200" y="300">Store on the bus: todo-store-id</text>
+    <text x="200" y="355">withView: TodoView → 'main'</text>
+    <text x="560" y="245">Child container: weatherService</text>
+    <text x="560" y="300">Store on the bus: weather-store-id</text>
+    <text x="560" y="355">withView: WeatherView → 'weather'</text>
+    <text x="380" y="452">Shell, rendered in EspApp</text>
+    <text x="200" y="493">RegionView 'main'</text>
+    <text x="560" y="493">RegionView 'weather'</text>
+  </g>
+
+  <g fill="none" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)">
+    <line x1="330" y1="125" x2="200" y2="220"/>
+    <line x1="430" y1="125" x2="560" y2="220"/>
+    <line x1="200" y1="370" x2="200" y2="465"/>
+    <line x1="560" y1="370" x2="560" y2="465"/>
+  </g>
+</svg>
