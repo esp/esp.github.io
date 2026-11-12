@@ -24,7 +24,7 @@ All four packages share one version number. Some packages need other packages in
 |---|---|
 | `esp-js` | nothing |
 | `esp-js-di` | nothing |
-| `esp-js-ui` | `esp-js` and `esp-js-di` |
+| `esp-js-ui` | `esp-js`, `esp-js-di`, and React 19 if you use views |
 | `esp-js-react` | `esp-js`, `esp-js-ui`, and React 19 |
 
 ## Import a package
@@ -53,14 +53,10 @@ npm install immer
 ## Load with a script tag
 
 You can load esp-js and esp-js-di without a bundler.
-Use `.dist/esp-js.js` and `.dist/esp-js-di.js` from the npm packages, or the `.min.js` files next to them.
+Use `.dist/esp-js.js` and `.dist/esp-js-di.js` from the npm packages for development, or the `.min.js` files next to them for production.
 esp-js sets the global `espJs`, and esp-js-di sets `espJsDi`.
 
-The esp-js file reads `process.env.NODE_ENV`, which a browser doesn't have.
-Define `process` in a script before you load it:
-
 ```html
-<script>window.process = { env: { NODE_ENV: 'production' } };</script>
 <script src="esp-js.min.js"></script>
 <script src="esp-js-di.min.js"></script>
 <script>

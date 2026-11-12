@@ -87,9 +87,9 @@ app: start
 
 ## Errors during start
 
-- If a lazy module function rejects, `start()` rejects and `app.modules` stays `[]`.
+- If a lazy module function rejects, the app logs the error and skips that module. `start()` carries on, and the module isn't in `app.modules`.
 - If an app `withInitialisation` or `withStart` hook throws, `start()` rejects.
-- If a module's `withInitialisation` or `withStart` hook throws, the app logs the error and continues. A module whose `withInitialisation` failed still runs its `withStart` hooks.
+- If a module's `withInitialisation` or `withStart` hook throws, the app logs the error and continues. A module whose `withInitialisation` failed doesn't run its `withStart` hooks.
 
 ## Call `start()` again
 

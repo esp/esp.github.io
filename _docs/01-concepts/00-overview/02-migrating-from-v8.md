@@ -60,7 +60,7 @@ For the whole API, see [event bus](../01-esp-js/02-event-bus.md).
 | `ModelBase`, `@observeEvent`, `@observeEventEnvelope`, `router.observeEventsOn()` | `StoreBuilder`: see [ModelBase and @observeEvent](#modelbase) |
 | `router.runAction()` | Publish an event and handle it: see [runAction](#runaction) |
 | `router.getEventObservable()`, `router.getAllEventsObservable()` | `withEventHandler`, `withPreviewHandler`, and `withEffect` |
-| Observing the committed or final stage | No replacement: see [stages](../01-esp-js/05-state-change-workflow.md#stages) |
+| Observing the committed or final stage, `eventContext.commit()` | An effect: see [effects](../01-esp-js/04-effects.md) |
 | The `EventProcessors` argument of `addModel` | `withPreEventProcessor` and `withPostEventProcessor`: see [event processors](#event-processors) |
 | `eventDispatchProcessor`, `eventDispatchedProcessor` | No replacement |
 | `router.getAllModelsObservable()` | No replacement. Subscribe to each store with `getStoreModelObservable`. |
@@ -211,11 +211,11 @@ type CounterModel = { count: number };
 const bus = new EventBus();
 
 bus.storeBuilder<CounterModel>('counter', { count: 0 })
-    .withPreEventProcessor(model => console.log('before:', model.count))
+    .withPreEventProcessor(draft => console.log('before:', draft.count))
     .withEventHandler('Increment', (draft) => {
         draft.count++;
     })
-    .withPostEventProcessor((model, eventsProcessed) => console.log('after:', eventsProcessed))
+    .withPostEventProcessor((draft, eventsProcessed) => console.log('after:', eventsProcessed))
     .build();
 
 bus.publishEvent('counter', 'Increment', {});
@@ -443,7 +443,6 @@ class CounterModel extends ModelBase {
 v9:
 
 ```tsx
-import type { ComponentType } from 'react';
 import { ConnectableComponent } from 'esp-js-react';
 
 type CounterModel = { count: number };
@@ -451,11 +450,9 @@ type CounterModel = { count: number };
 const CounterView = ({ model }: { model: CounterModel }) => <p>Count: {model.count}</p>;
 
 export const Counter = () => (
-    <ConnectableComponent storeId="counter" view={CounterView as ComponentType} />
+    <ConnectableComponent storeId="counter" view={CounterView} />
 );
 ```
-
-For the cast, see [the view prop type](../03-esp-js-react/04-rendering-a-view.md#the-view-prop-type).
 
 ### Selector options {#selector-options}
 

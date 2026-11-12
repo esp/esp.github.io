@@ -22,7 +22,6 @@ Without esp-js-ui, you create the bus and register the stores yourself.
 - [`ConnectableComponent`](./04-rendering-a-view.md) renders a view with the model of one store, and renders it again each time the model changes.
 
 ```tsx
-import type { ComponentType } from 'react';
 import { createRoot } from 'react-dom/client';
 import { EventBus } from 'esp-js';
 import { ConnectableComponent, EspEventBusContextProvider, usePublishStoreEvent } from 'esp-js-react';
@@ -48,16 +47,13 @@ const CounterView = ({ model }: { model: CounterModel }) => {
 
 createRoot(document.getElementById('root')!).render(
     <EspEventBusContextProvider bus={bus}>
-        <ConnectableComponent storeId="counter" view={CounterView as ComponentType} />
+        <ConnectableComponent storeId="counter" view={CounterView} />
     </EspEventBusContextProvider>
 );
 ```
 
-1. The sample registers the `counter` store before React renders, so `ConnectableComponent` finds it.
-2. `ConnectableComponent` passes the store's model to `CounterView` as the `model` prop.
-3. A click publishes `Increment` to the `counter` store. The view renders again with the new count.
-
-If TypeScript's `strict` option is on, `view` needs the cast: see [the view prop type](./04-rendering-a-view.md#the-view-prop-type).
+1. `ConnectableComponent` passes the store's model to `CounterView` as the `model` prop.
+2. A click publishes `Increment` to the `counter` store. The view renders again with the new count.
 
 ## Pages in this section
 

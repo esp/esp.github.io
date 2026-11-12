@@ -165,3 +165,32 @@ true
 Disposing a child container doesn't dispose its parent.
 The `isDisposed` property is `true` once a container is disposed.
 After that, its methods, such as `resolve` and `register`, throw `Container has been disposed`.
+
+## Container events
+
+`on(eventType, handler)` adds a handler, and `off(eventType, handler)` removes it.
+The container calls the handler with a notification that has the `name`, the `instance`, and the `eventType`:
+
+- `instanceRegistered`: `registerInstance` added an instance.
+- `instanceCreated`: the container built an instance.
+
+The handlers are shared by the whole container tree, so a handler added on the root container also gets the events of every child container:
+
+```ts
+import { Container } from 'esp-js-di';
+
+class Foo {}
+
+const container = new Container();
+container.on('instanceCreated', notification => console.log('created:', notification.name));
+
+const childContainer = container.createChildContainer();
+childContainer.register('foo', Foo).transient();
+childContainer.resolve('foo');
+```
+
+Output:
+
+```
+created: foo
+```

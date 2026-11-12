@@ -34,10 +34,8 @@ Clone the [esp-js repo](https://github.com/esp/esp-js), then run these commands 
 
 ```
 npm run bootstrap
-npm run build-dev
-cd examples/example-app
-npm run dev
+npm run start-sample
 ```
 
-`npm run build-dev` builds the four packages, which the app loads from the repo.
-`npm run dev` starts the Vite dev server and prints the URL to open.
+`npm run start-sample` builds the four packages, which the app loads from the repo.
+Then it starts the Vite dev server and prints the URL to open.

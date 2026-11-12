@@ -21,7 +21,7 @@ It takes these props:
 
 - `storeId`: the store to connect to. If you leave it out, it uses the storeId of the enclosing `EspStoreContextProvider`.
 - `view`: the component to render.
-- `createPublishEventProps`: a function that gets a `publishEvent(eventType, event)` function for the store, and returns props for the view. It runs once for each bus and storeId.
+- `createPublishEventProps`: a function that gets a `publishEvent(eventType, event)` function for the store, and returns props for the view. It runs once for each bus and storeId, so it must not use props that change.
 - `mapStoreModelToProps`: a function that gets the model and the props from `createPublishEventProps`, and returns props for the view.
 - Any other prop, which is passed on to the view.
 
@@ -35,7 +35,6 @@ The view gets these props:
 `ConnectableComponent` also wraps the view in an `EspStoreContextProvider`, so the [store hooks](#hooks-for-the-connected-store) work inside it.
 
 ```tsx
-import type { ComponentType } from 'react';
 import { ConnectableComponent } from 'esp-js-react';
 import type { TodoModel } from '../stores/todoModel';
 
@@ -55,7 +54,7 @@ const NewTodo = ({ text, onTextChange, onAdd }: NewTodoProps) => (
 export const NewTodoContainer = () => (
     <ConnectableComponent
         storeId="todo-store-id"
-        view={NewTodo as ComponentType}
+        view={NewTodo}
         createPublishEventProps={publishEvent => ({
             onTextChange: (text: string) => publishEvent('UpdateNewItemText', { text }),
             onAdd: () => publishEvent('AddTodo', {}),
@@ -70,20 +69,11 @@ export const NewTodoContainer = () => (
 `NewTodo` gets `text` from the model, and two callbacks that publish to the `todo-store-id` store.
 The store is the todo store from [store builder](../01-esp-js/03-store-builder.md#classes-as-models).
 
-### Register the store before the view mounts
+### A store that isn't registered yet
 
-`ConnectableComponent` looks for the store once, when it mounts.
-If the store isn't registered then, it renders nothing, and it doesn't render the view when the store is registered later.
-In an esp-js-ui app, register the store in the module's `withInitialisation`, which runs during `start()`, and [render after `start()`](./02-esp-app.md#render-an-app-with-espapp). See [views](../05-esp-js-ui/05-views.md).
+If the store isn't registered when `ConnectableComponent` mounts, it renders nothing until the store is registered, then renders the view.
 
 After `bus.removeStore(storeId)`, the view stays on screen with the last model it got.
-
-### The view prop type
-
-The `view` prop is typed `React.ComponentType`, a component with no props.
-If your `tsconfig.json` has `strict` or `strictFunctionTypes` on, TypeScript rejects a view whose props are required.
-Cast the view, as in `view={NewTodo as ComponentType}`.
-A view bound with `withView` doesn't need the cast.
 
 ## Hooks for the connected store
 
@@ -150,5 +140,5 @@ export const TodoTexts = () => {
 
 The selector returns a new array each time the model changes, so with `===` the component would render again on every change. `sameTexts` compares the items instead.
 
-The hook keeps the first selector it gets for each bus and storeId, so the selector should read only the model.
-Like `ConnectableComponent`, the hook returns `null` if the store isn't registered when the component mounts.
+The hook uses the latest selector on each render, so the selector can use the component's props.
+If the store isn't registered yet, the hook returns `null` until it is.

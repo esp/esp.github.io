@@ -98,11 +98,10 @@ Every handler and effect gets an `EventContext` with these members:
 | `eventType` | The event type. |
 | `entityKey` | The `entityKey` the event was published with, or `undefined`. |
 | `currentStage` | The current `ObservationStage`. |
-| `isCanceled`, `isCommitted` | Whether `cancel()` or `commit()` was called. |
+| `isCanceled` | Whether `cancel()` was called. |
 | `cancel()` | Cancels the event. Call it from a preview handler. |
-| `commit()` | Commits the event. Call it from an event handler. |
 
-Calling `cancel()` or `commit()` twice on the same event throws.
+Calling `cancel()` twice on the same event throws.
 The [state change workflow](./05-state-change-workflow.md#stages) page explains the stages.
 
 ## Read a model
@@ -190,7 +189,7 @@ After a halt:
 
 - `publishEvent`, `broadcastEvent`, `executeEvent`, `build()`, and `subscribe` throw.
 - `getStoreModel`, `findStoreModel`, `isStoreRegistered`, `removeStore`, and `dispose` still work.
-- The model of the store whose handler threw can't be read: reading it throws a `TypeError`.
+- The store whose handler threw keeps its last good model. The bus discards the changes from the round that failed.
 
 ```typescript
 import { EventBus } from 'esp-js';

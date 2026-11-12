@@ -38,6 +38,4 @@ The views appear in the order described in [regions](../05-esp-js-ui/06-regions.
 
 `RegionView` renders nothing if no binding matches `regionName`, or if there is no `EspApp` above it.
 
-Each `ConnectableComponent` uses the storeId as its React key.
-If two bindings in the same region use the same storeId, React logs a warning about two children with the same key.
-Give each view in a region its own storeId.
+Two bindings in a region can use the same storeId. Each shows its own view of that store.

@@ -16,13 +16,11 @@ To scope a set of objects, create a [child container](./07-child-containers.md) 
 
 ## The default export
 
-In JavaScript, you can also import the default export.
+You can also import the default export.
 It holds `Container`, `RegistrationModifier`, `ResolverContext`, `EspDiConsts`, and `ResolverNames`:
 
-```javascript
+```typescript
 import espDi from 'esp-js-di';
 
 const container = new espDi.Container();
 ```
-
-The TypeScript typings don't declare the default export, so in TypeScript import the named exports.

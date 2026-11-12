@@ -48,7 +48,7 @@ bus.storeBuilder<TodoModel>('todo', { items: [], newItemText: '' })
     .withEventHandler('AddTodo', (draft) => {
         draft.newItemText = '';
     })
-    .withPostEventProcessor((model, eventsProcessed) => {
+    .withPostEventProcessor((draft, eventsProcessed) => {
         console.log('processed:', eventsProcessed);
     })
     .build();
@@ -75,14 +75,45 @@ The first `AddTodo` adds nothing: the preview handler cancels it because the tex
 
 `withPreviewHandler(eventType, handler)` adds a handler that runs before the event handlers.
 It gets the model, the event, and the event context.
+The model is typed `Readonly<TModel>`: don't change it.
 If it calls `eventContext.cancel()`, the event handlers and effects for that event don't run. Other preview handlers for the event still run.
 
 ## Pre and post event processors
 
 `withPreEventProcessor(processor)` runs at the start of each [round](./05-state-change-workflow.md#rounds), before the round's events.
 `withPostEventProcessor(processor)` runs at the end of the round. It also gets the event types the round processed, including canceled events.
-Both get the same draft as the event handlers, typed as `Readonly<TModel>`.
+Both get the same draft as the event handlers, typed `Draft<TModel>`, so they can change it.
 A store has one of each: calling the method again replaces the processor.
+
+This post event processor keeps a total up to date after each round:
+
+```typescript
+import { EventBus } from 'esp-js';
+
+type CartModel = { prices: number[]; total: number };
+
+const bus = new EventBus();
+
+bus.storeBuilder<CartModel>('cart', { prices: [], total: 0 })
+    .withEventHandler('AddItem', (draft, event: { price: number }) => {
+        draft.prices.push(event.price);
+    })
+    .withPostEventProcessor((draft) => {
+        draft.total = draft.prices.reduce((sum, price) => sum + price, 0);
+    })
+    .build();
+
+bus.publishEvent('cart', 'AddItem', { price: 2 });
+bus.publishEvent('cart', 'AddItem', { price: 3 });
+
+console.log(bus.getStoreModel<CartModel>('cart').total);
+```
+
+Output:
+
+```
+5
+```
 
 ## Effects and event subscriptions
 

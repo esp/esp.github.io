@@ -5,7 +5,7 @@ permalink: /concepts/esp-js/state-change-workflow/
 
 This page lists the steps the event bus takes, for each store, after you publish an event.
 
-![Flow diagram: a round runs the pre event processor, each event's stages, and the post event processor; then the effects run; if they published to the store another round starts, otherwise observers get one update and the bus moves to the next store](../../../images/dispatch-cycle.svg){: .align-center}
+![Flow diagram: a round runs the pre event processor, each event's preview and normal stages, and the post event processor; then the effects run; if they published to the store another round starts, otherwise observers get one update and the bus moves to the next store](../../../images/dispatch-cycle.svg){: .align-center}
 
 ## Rounds
 
@@ -21,17 +21,11 @@ A round is one immer `produce` call, so every handler in the round changes the s
 
 Each event goes through these stages, named by the `ObservationStage` values:
 
-1. `preview`: the preview handlers run. A preview handler can call `eventContext.cancel()`. A canceled event skips the other stages and its effects.
-2. `normal`: the event handlers run. An event handler can call `eventContext.commit()`.
-3. `committed`: runs only if a handler called `commit()` at the normal stage.
-4. `final`: always runs for an event that wasn't canceled.
+1. `preview`: the preview handlers run. A preview handler can call `eventContext.cancel()`. A canceled event skips the normal stage and its effects.
+2. `normal`: the event handlers run.
 
-Canceling outside the preview stage, or committing outside the normal stage, throws.
-
-{% capture info_1 %}
-`StoreBuilder` has hooks for the preview stage (`withPreviewHandler`), the normal stage (`withEventHandler`), and effects. Nothing public runs at the committed or final stage.
-{% endcapture %}
-{% include callout-info.html content=info_1 title="The committed and final stages" %}
+Canceling at the normal stage throws.
+For work that runs after an event has changed the model, use an [effect](#effects).
 
 ## Effects
 
@@ -67,7 +61,7 @@ bus.storeBuilder<CounterModel>('counter', { count: 0 })
             publish('Increment', {});
         }
     })
-    .withPostEventProcessor((model, eventsProcessed) => console.log('post event processor:', eventsProcessed))
+    .withPostEventProcessor((draft, eventsProcessed) => console.log('post event processor:', eventsProcessed))
     .build();
 
 bus.getStoreModelObservable<CounterModel>('counter')
@@ -97,9 +91,9 @@ The observer gets one update for both rounds.
 
 ## The dispatch limit
 
-The bus counts rounds while it processes.
+The bus counts the events it dispatches until its queues are empty.
 When the count reaches 10,000, it throws `Circular event dispatch detected` and [halts](./02-event-bus.md#errors-and-halting).
-Effects that keep publishing to their own store hit this limit, and so do stores that keep publishing to each other.
+A handler or an effect that keeps publishing to its own store hits this limit, and so do stores that keep publishing to each other.
 
 ```typescript
 import { EventBus } from 'esp-js';
@@ -129,8 +123,3 @@ Output:
 ```
 Circular event dispatch detected, dispatch loop halted. 10000.
 ```
-
-{% capture warning_1 %}
-An event handler that keeps publishing to its own store never hits the limit: its events stay in one round, and the bus hangs. Publish follow-on events from an effect instead.
-{% endcapture %}
-{% include callout-warning.html content=warning_1 title="A handler loop hangs" %}

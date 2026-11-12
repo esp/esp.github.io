@@ -31,7 +31,7 @@ export const todoModule = ModuleBuilder
 ```
 
 `withInitialisation` runs during `start()`, so the store exists before the app renders.
-If no store is registered under the `storeId` when the view mounts, the view renders nothing: see [register the store before the view mounts](../03-esp-js-react/04-rendering-a-view.md#register-the-store-before-the-view-mounts).
+If no store is registered under the `storeId` yet, the view renders nothing until one is.
 
 ## What the view gets
 
